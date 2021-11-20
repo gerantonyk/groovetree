@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+
+.meta-data-form {
+  background-color: #f8ccf4;
+  padding: 2%;
+  color: #0e2251;
+}
