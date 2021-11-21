@@ -42,3 +42,12 @@
   padding: 2%;
   color: #0e2251;
 }
+
+.song-upload {
+  display: flex;
+  flex-direction: row;
+  align-items: top;
+  justify-content: center;
+  /* height: 60vh; */
+  margin-bottom: 5%;
+}

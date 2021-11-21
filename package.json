@@ -3,14 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.6.0",
+    "@emotion/styled": "^11.6.0",
     "@material-ui/core": "^4.12.3",
+    "@mui/material": "^5.1.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "dotenv": "^10.0.0",
     "ipfs-http-client": "^54.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
+    "state-pool": "^0.6.0",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
@@ -38,11 +43,11 @@
     ]
   },
   "devDependencies": {
-    "@nomiclabs/hardhat-ethers": "^2.0.0",
-    "@nomiclabs/hardhat-waffle": "^2.0.0",
-    "chai": "^4.2.0",
-    "ethereum-waffle": "^3.0.0",
-    "ethers": "^5.0.0",
+    "@nomiclabs/hardhat-ethers": "^2.0.2",
+    "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "chai": "^4.3.4",
+    "ethereum-waffle": "^3.4.0",
+    "ethers": "^5.5.1",
     "hardhat": "^2.6.8"
   }
 }

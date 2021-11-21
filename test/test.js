@@ -17,6 +17,20 @@ describe("Song", function () {
     it("should deploy", async function () {
         expect(this.song_contract.address).to.be.a('string');
         expect(this.song_contract.address.length).to.be.equal(42);
-        expect(await this.song_contract.getOwner()).to.be.equal(this.owner.address);
+        const owner = await this.song_contract.getOwner();
+        console.log("owner", owner);
+        expect(owner).to.be.equal(this.owner.address);
+    });
+    it("should create a token", async function () {
+        await this.song_contract.connect(this.user).createToken("TestSong");
+        const token = await this.song_contract.getToken(0);
+        expect(token.title).to.be.equal("TestSong");
+        expect(token.owner).to.be.equal(this.user.address);
+        await this.song_contract.connect(this.user2).createToken("TestSongII");
+        const tokens = await this.song_contract.getTokens();
+        expect(tokens[0].title).to.be.equal("TestSong");
+        expect(tokens[1].title).to.be.equal("TestSongII");
+        // console.log("tokens", tokens);
+        // console.log("token", token);
     });
 });

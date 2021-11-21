@@ -5,13 +5,42 @@ import "hardhat/console.sol";
 
 contract Song {
     address private owner;
+    Token[] private tokens;
+    struct Token {
+        address owner;
+        string title;
+    }
 
     constructor() {
         owner = msg.sender;
     }
 
+    // function getOwner() public view returns (address) {
+    //     require(msg.sender == owner, "Only the owner can view the owner");
+    //     return owner;
+    // }
+
+    function createToken(string calldata _title)
+        public
+        payable
+        returns (uint256)
+    {
+        (bool success, ) = payable(address(owner)).call{value: msg.value}("");
+        require(success, "failed transactions");
+        tokens.push(Token(msg.sender, _title));
+        return (tokens.length - 1);
+    }
+
     function getOwner() public view returns (address) {
-        require(msg.sender == owner, "Only the owner can view the owner");
         return owner;
+    }
+
+    function getToken(uint256 _id) public view returns (Token memory) {
+        // require(msg.sender == owner, "Only the owner can view the token");
+        return tokens[_id];
+    }
+
+    function getTokens() public view returns (Token[] memory) {
+        return tokens;
     }
 }
