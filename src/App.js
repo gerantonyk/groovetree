@@ -1,10 +1,10 @@
 import './App.css';
-// import Upload from './Upload';
-import SongMetadataForm from './components/SongMetadataForm';
-import SongImage from './components/SongImage';
-import SongUpload from './components/SongUpload';
+import UploadPage from './components/UploadPage';
+import SongViewPage from './components/SongViewPage';
+// import SongListPage from './components/SongListPage';
 import { create } from 'ipfs-http-client';
 import { store, useGlobalState } from 'state-pool';
+import { BrowserRouter as Router, Route, Routes} from "react-router-dom"
 
 // const client = create('https://ipfs.infura.io:5001/api/v0');
 const client = create('https://ipfs.infura.io:5001/api/v0')
@@ -17,16 +17,19 @@ function App() {
   const [ipfsClient, setIpfsClient] = useGlobalState("ipfsClient");
   console.log("ipfsClient in App functions", ipfsClient);
   return (
-    <div className="App">
-      <header className="App-header">
-        
-        <SongUpload/>
-        <div className="song-upload">
-          <SongImage/>
-          <SongMetadataForm/>
-        </div>
-      </header>
-    </div>
+    <Router>
+      <main>  
+      <div className="App">
+        <Routes>
+          {/* <Route path="/" component={UploadPage} /> */}
+          <Route path="/" element={<UploadPage />} />
+          <Route path="/song/:songId" element={<SongViewPage />} />
+          {/* <Route path="/allsongs/" element={<SongListPage />} /> */}
+
+        </Routes>
+      </div>
+    </main>
+    </Router>
   );
 }
 

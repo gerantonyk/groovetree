@@ -5,7 +5,7 @@ const SSAddress = "0x524beAc334589474B24247E0deABFfB9b16469F6";
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 
 async function createSongToken() {
-  console.log("deploy")
+  console.log("create Song Token")
 
   await window.ethereum.request({ method: 'eth_requestAccounts' });
   const signer = provider.getSigner();

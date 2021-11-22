@@ -19,16 +19,13 @@ contract Song {
     //     require(msg.sender == owner, "Only the owner can view the owner");
     //     return owner;
     // }
+    event TokenCreated(uint256 index, address owner, string title);
 
-    function createToken(string calldata _title)
-        public
-        payable
-        returns (uint256)
-    {
+    function createToken(string calldata _title) public payable {
         (bool success, ) = payable(address(owner)).call{value: msg.value}("");
         require(success, "failed transactions");
         tokens.push(Token(msg.sender, _title));
-        return (tokens.length - 1);
+        emit TokenCreated(tokens.length - 1, msg.sender, _title);
     }
 
     function getOwner() public view returns (address) {

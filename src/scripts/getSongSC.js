@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import Song from '../artifacts/contracts/Song.sol/Song.json';
+import Song from '../artifacts/Song.sol/Song.json';
 // require('dotenv').config();
 
 const provider = new ethers.providers.Web3Provider(window.ethereum);

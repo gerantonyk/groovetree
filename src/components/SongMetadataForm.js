@@ -24,7 +24,8 @@ const SongMetadataForm = () => {
         const song = await getSong();
         console.log("song in React componet:", song);
         // setSongTitle(song.title);
-        setSongIsSubmitted(true);
+      setSongIsSubmitted(true);
+      
         //Trigger the song upload to IPFS in SongUploads.js
     }
     return (
@@ -52,7 +53,7 @@ const SongMetadataForm = () => {
           />
         </Box>
         
-        <h4>Song Metadata (stored with audio data on ipfs)</h4>
+          <h4>Song Metadata (stored with audio data on ipfs)</h4>
         <Box
                 
         sx={{

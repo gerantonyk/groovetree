@@ -2,9 +2,11 @@ import { useState, useRef } from 'react';
 import Box from '@mui/material/Box';
 import { store, useGlobalState } from 'state-pool';
 import { createSongToken } from '../scripts/mintsong';
+import { Link } from "react-router-dom";
 store.setState("ipfsAudiofileUrl", "");
 store.setState("songIsUploadedAndMinted", false);
 const SongUpload = () => {
+    const songId = 0;
     const [songTitle] = useGlobalState("songTitle");
     console.log("songTitle in songUpload:", songTitle)
     const [ipfsClient] = useGlobalState('ipfsClient');
@@ -63,7 +65,7 @@ const SongUpload = () => {
             {/* <div className="upload-bar"> */}
             <h2>Create new BlockSong Token!</h2>
             {songIsUploadedAndMinted &&
-                <p>Song has been uploaded: {songTitle }</p>
+                <p>Song has been uploaded: <Link to={`/song/${songId}`}>{songTitle }</Link></p>
             }
                 <input type="file" ref={ref} onChange={onChange} />
             {/* </div> */}
