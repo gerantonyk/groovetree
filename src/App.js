@@ -11,11 +11,12 @@ const client = create('https://ipfs.infura.io:5001/api/v0')
 
 console.log("ipfsClient after initialized", client);
 store.setState("ipfsClient", client);
-store.setState("SSAddress", "0x524beAc334589474B24247E0deABFfB9b16469F6");
+store.setState("SSAddress", "0xdD760789a7d26994867850041F98AEeE15E6f14a");
 store.setState("songIsSubmitted", false);
 function App() {
   const [ipfsClient, setIpfsClient] = useGlobalState("ipfsClient");
   console.log("ipfsClient in App functions", ipfsClient);
+  // const song = getSongSC();
   return (
     <Router>
       <main>  

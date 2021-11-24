@@ -1,15 +1,32 @@
-# Basic Sample Hardhat Project
+#Chainshot MVP
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+This repo is both a hardhat repo and a react repo. 
 
-Try running some of the following tasks:
 
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
+###Installation
+
+When you download the repo run
+
+`npm install`
+### Hardhat
+
+Edit contracts in `contracts` folder. 
+
+Use typical hardhat commands like:
+
+`npx hardhat test`
+`npx hardhat compile`
+
+Run the following shell script to execute hardhat test and THEN copy the necessary artifacts into the React src:
+
+`./refresh.sh`
+
+### React
+
+`npm run build` -> Build the React project locally
+
+`npm start` -> Serve the react app on [localhost://3000](http://localhost:3001/)
+
+
+
+
