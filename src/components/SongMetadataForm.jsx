@@ -1,27 +1,22 @@
-import React, { useState, useRef} from 'react';
+import React, { useState} from 'react';
 import { TextField } from '@material-ui/core';
 import Box from '@mui/material/Box';
 import { Button } from '@material-ui/core';
 import { useGlobalState, store } from 'state-pool';
-import getSong from '../scripts/getSongSC';
 store.setState("songTitle", "");
 store.setState("songContract", null);
 const SongMetadataForm = () => {
     const [songTitle, setSongTitle] = useGlobalState("songTitle");
     const [songDesc, setSongDesc] = useState("");
     const [songIsSubmitted, setSongIsSubmitted] = useGlobalState("songIsSubmitted"); 
-    const [songSC, setSongSC] = useGlobalState("songContract");  
   const handleChange = (event) => {
         setSongDesc(event.target.value);
     };
 
     function handleTitleChange(event) {
       setSongTitle(event.target.value);
-      console.log(songTitle , "has been set");
     }
     async function handleClick() {
-        setSongSC(await getSong());
-        console.log("song in React componet:", songSC);
         setSongIsSubmitted(true);
     }
     return (

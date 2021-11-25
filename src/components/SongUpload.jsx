@@ -8,21 +8,17 @@ store.setState("songIsUploadedAndMinted", false);
 const SongUpload = () => {
     const songId = 0;
     const [songTitle] = useGlobalState("songTitle");
-    console.log("songTitle in songUpload:", songTitle)
     const [ipfsClient] = useGlobalState('ipfsClient');
     const [songIsUploadedAndMinted, setSongIsUploadedAndMinted] = useGlobalState('songIsUploadedAndMinted');
     const [songIsSubmitted, setSongIsSubmitted] = useGlobalState("songIsSubmitted"); 
-    const [songSC, setSongSC] = useGlobalState("songContract");  
+    const [songSC] = useGlobalState("songContract");
+    console.log("SongUpload Rendering", songSC);
     const [file, setFile] = useState(null);
     const [fileUrl, updateFileUrl] = useGlobalState('ipfsAudiofileUrl');
     const ref = useRef();
     const resetInput = () => {
         ref.current.value = "";
     };
-    // if (songIsUploadedAndMinted) {
-    //     //wait for emission to create link
-    //     if ()    
-    // }
     async function onChange(e) {
         console.log(e)
         const file = e.target.files[0];
@@ -36,7 +32,7 @@ const SongUpload = () => {
             console.log("uploaded to ipfs in SongUpload:" + url);
             updateFileUrl(url);
             resetInput();
-            const songtokenid = createSongToken(songTitle);
+            const songtokenid = await createSongToken(songTitle);
             console.log(songtokenid)
 
         } catch (err) {
@@ -44,18 +40,16 @@ const SongUpload = () => {
         }
     }
    
-    // useEffect(() => {
     if (songIsSubmitted) {
-        // console.log("songIsSubmitted is true in SongUpload");
         addToIpfs();
-        // console.log("ADDED TO IPFS");
         setSongIsSubmitted(false);
-        let trxEmitted = false;
+        // let trxEmitted = false;
         // while (!trxEmitted) {
+        console.log("listening for emission on", songSC);
             songSC.on('TokenCreated', (idx, owner, addr) => {
             console.log("TokenCreated event emitted");
                 console.log(idx, "::", owner, "::", addr);
-                trxEmitted = true;
+                // trxEmitted = true;
             });
             console.log("listening for emitter")
         // }
