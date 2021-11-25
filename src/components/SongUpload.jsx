@@ -43,15 +43,12 @@ const SongUpload = () => {
     if (songIsSubmitted) {
         addToIpfs();
         setSongIsSubmitted(false);
-        // let trxEmitted = false;
-        // while (!trxEmitted) {
         console.log("listening for emission on", songSC);
-            songSC.on('TokenCreated', (idx, owner, addr) => {
-            console.log("TokenCreated event emitted");
-                console.log(idx, "::", owner, "::", addr);
-                // trxEmitted = true;
-            });
-            console.log("listening for emitter")
+        songSC.on('TokenCreated', (idx, owner, addr) => {
+        console.log("TokenCreated event emitted");
+            console.log(idx, "::", owner, "::", addr);
+        });
+        console.log("listening for emitter")
         // }
         // console.log("SONGISSUBMITTED ==== False");
         setSongIsUploadedAndMinted(true);   

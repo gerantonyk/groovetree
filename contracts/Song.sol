@@ -5,6 +5,7 @@ import "hardhat/console.sol";
 
 contract Song {
     address private owner;
+    address private createdBy;
     Token[] private tokens;
     struct Token {
         address owner;
@@ -13,6 +14,7 @@ contract Song {
 
     constructor() {
         owner = msg.sender;
+        createdBy = msg.sender;
     }
 
     event TokenCreated(uint256 index, address owner, string title);
