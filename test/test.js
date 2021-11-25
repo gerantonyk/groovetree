@@ -22,11 +22,15 @@ describe("Song", function () {
         expect(owner).to.be.equal(this.owner.address);
     });
     it("should create a token", async function () {
-        await this.song_contract.connect(this.user).createToken("TestSong");
+        expect(await this.song_contract.connect(this.user).createToken("TestSong"))
+            .to.emit(this.song_contract, "TokenCreated")
+            .withArgs(0, this.user.address, "TestSong");
         const token = await this.song_contract.getToken(0);
         expect(token.title).to.be.equal("TestSong");
         expect(token.owner).to.be.equal(this.user.address);
-        await this.song_contract.connect(this.user2).createToken("TestSongII");
+        expect(await this.song_contract.connect(this.user2).createToken("TestSongII"))
+            .to.emit(this.song_contract, "TokenCreated")
+            .withArgs(1, this.user2.address, "TestSongII");;
         const tokens = await this.song_contract.getTokens();
         expect(tokens[0].title).to.be.equal("TestSong");
         expect(tokens[1].title).to.be.equal("TestSongII");

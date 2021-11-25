@@ -1,14 +1,14 @@
 import { ethers } from 'ethers';
-import Song from '../artifacts/contracts/Song.sol/Song.json';
-// require('dotenv').config();
+import config from "../config.json";
+import Song from '../artifacts/Song.sol/Song.json';
 
 const provider = new ethers.providers.Web3Provider(window.ethereum);
-const SONG_SC_ADDR = "0x524beAc334589474B24247E0deABFfB9b16469F6";
-async function getSong() {
-    const SONG = await new ethers.Contract(SONG_SC_ADDR, Song.abi, provider);
+async function getSongSC() {
+    const SONG = await new ethers.Contract(config.SONG_SC_ADDR, Song.abi, provider);
     //TODO Error handle in case the song is not retrieved
-    console.log(SONG)
+
+    console.log("SC RETRIEVED IS:",SONG)
     return SONG;
 }
 
-export default getSong;
+export default getSongSC;
