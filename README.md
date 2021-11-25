@@ -1,9 +1,9 @@
-#Chainshot MVP
+# Chainshot MVP
 
 This repo is both a hardhat repo and a react repo. 
 
 
-###Installation
+### Installation
 
 When you download the repo run
 
