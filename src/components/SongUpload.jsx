@@ -1,10 +1,11 @@
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import Box from '@mui/material/Box';
 import { store, useGlobalState } from 'state-pool';
 import { createSongToken } from '../scripts/mintsong';
 import { Link } from "react-router-dom";
 store.setState("ipfsAudiofileUrl", "");
 store.setState("songIsUploadedAndMinted", false);
+store.setState("ipfsClient", "");
 const SongUpload = () => {
     const songId = 0;
     const [songTitle] = useGlobalState("songTitle");

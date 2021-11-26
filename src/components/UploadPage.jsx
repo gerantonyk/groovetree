@@ -1,3 +1,4 @@
+import React from 'react';
 import SongUpload from './SongUpload';
 import SongImage from './SongImage';
 import SongMetadataForm from './SongMetadataForm';

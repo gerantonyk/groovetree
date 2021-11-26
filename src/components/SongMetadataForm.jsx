@@ -5,6 +5,7 @@ import { Button } from '@material-ui/core';
 import { useGlobalState, store } from 'state-pool';
 store.setState("songTitle", "");
 store.setState("songContract", null);
+store.setState("songIsSubmitted", false);
 const SongMetadataForm = () => {
     const [songTitle, setSongTitle] = useGlobalState("songTitle");
     const [songDesc, setSongDesc] = useState("");

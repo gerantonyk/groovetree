@@ -1,9 +1,9 @@
 .App {
   text-align: center;
   background-image: url("bg.png");
-  height: 100%;
-  width: 100%;
-  padding: 10%;
+  /* height: 100%; */
+  /* width: 100%; */
+  padding: 2%;
 }
 
 .App-logo {

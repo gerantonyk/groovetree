@@ -1,16 +1,19 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 import getSongs from '../scripts/getSongs';
+import { connect } from 'react-redux'
+import {useSelector} from 'react-redux'
 
 const ViewAllSongs = () => {
     const [tokens, setTokens] = useState(null);
+    const songContract = useSelector((state) => state.songContract)
     async function getTokens() {
         let tokens = await getSongs();
         console.log("tokens in ViewAll after call", tokens);
         setTokens(tokens);
     }
     if (tokens == null) {
-        getTokens();
+        getTokens(songContract);
         return (<div>Loading...</div>)
     } else {
         return (
@@ -26,5 +29,10 @@ const ViewAllSongs = () => {
         );
     }
 }
-
-export default ViewAllSongs;
+const mapStateToProps = state => {
+    return {
+        songContract: state.contract
+    }
+}
+export default connect(mapStateToProps)(ViewAllSongs);
+// export default ViewAllSongs;
