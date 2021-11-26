@@ -1,6 +1,7 @@
 import './App.css';
 import UploadPage from './components/UploadPage';
 import SongViewPage from './components/SongViewPage';
+import ViewAllSongs from './components/ViewAllSongs';
 import getSongSC from './scripts/getSongSC';
 import { create } from 'ipfs-http-client';
 import { store, useGlobalState } from 'state-pool';
@@ -31,8 +32,7 @@ function App() {
         <Routes>
           <Route path="/" element={<UploadPage />} />
           <Route path="/song/:songId" element={<SongViewPage />} />
-          {/* <Route path="/allsongs/" element={<SongListPage />} /> */}
-
+          <Route path="/allsongs/" element={<ViewAllSongs />} />
         </Routes>
       </div>
     </main>
