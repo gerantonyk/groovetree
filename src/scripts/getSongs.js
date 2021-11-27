@@ -1,14 +1,6 @@
-import { ethers } from 'ethers';
-import config from "../config.json";
-import Song from '../artifacts/Song.sol/Song.json';
-// require('dotenv').config();
 
-const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-async function getSongs() {
-    const sc = await new ethers.Contract(config.SONG_SC_ADDR, Song.abi, provider);
-    const songs = await sc.getTokens();
-    console.log("songs from getSongs: ", songs);
-    return songs;
+async function getSongs(sc) {
+    const songtokens = await sc.getTokens();
+    return songtokens;
 }
 export default getSongs;

@@ -2,22 +2,21 @@ import React, { useState} from 'react';
 import { TextField } from '@material-ui/core';
 import Box from '@mui/material/Box';
 import { Button } from '@material-ui/core';
-import { useGlobalState, store } from 'state-pool';
-store.setState("songTitle", "");
-store.setState("songContract", null);
-const SongMetadataForm = () => {
-    const [songTitle, setSongTitle] = useGlobalState("songTitle");
+
+const SongMetadataForm = (props) => {
+  console.log("RENDERING METADATAFORM")
     const [songDesc, setSongDesc] = useState("");
-    const [songIsSubmitted, setSongIsSubmitted] = useGlobalState("songIsSubmitted"); 
   const handleChange = (event) => {
         setSongDesc(event.target.value);
     };
 
     function handleTitleChange(event) {
-      setSongTitle(event.target.value);
+      props.setSongTitle(event.target.value);
     }
     async function handleClick() {
-        setSongIsSubmitted(true);
+      // props.setSongTitle(songTitle);
+      console.log("set song submitted in SMetaDF to true");
+      props.setSongSubmitted(true);
     }
     return (
         <div className="meta-data-form">
@@ -37,7 +36,7 @@ const SongMetadataForm = () => {
                 label="Title"
                 variant="standard"
                 onChange={handleTitleChange}
-                value={songTitle}
+                value={props.songTitle}
               />
             </Box>
         
@@ -64,7 +63,7 @@ const SongMetadataForm = () => {
           placeholder="Song description and notes"
                 />       
         </Box>
-        <Button variant="contained" onClick={ handleClick}>Upload Song</Button>
+        <Button variant="contained" onClick={handleClick}>Upload Song</Button>
         </div>
     );
 }
