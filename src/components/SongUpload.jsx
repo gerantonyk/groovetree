@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { create } from 'ipfs-http-client';
 import { createSongToken } from '../scripts/mintsong';
@@ -17,12 +17,38 @@ const SongUpload = (props) => {
         ref.current.value = "";
     };
 
+    useEffect(() => {
+        if (mintingSong && props.songContract) {
+            console.log("listening for emission on", props.songContract);
+            listenForTokenCreation();
+        }
+    }, [mintingSong])
+    async function listenForTokenCreation() {
+        props.songContract.on('TokenCreated', (idx, owner, addr) => {
+            console.log("TokenCreated event emitted");
+            console.log(idx, "::", owner, "::", addr);
+            setLastSongId(idx);
+            setSongMinted(true);
+            setMintingSong(false);
+        });
+    }
+    useEffect(() => {
+        if (props.songSubmitted) {
+            console.log("use effect for songSubmitted")
+            props.setSongSubmitted(false);
+            setMintingSong(true);
+            setSongMinted(false);
+            console.log("Song has been submitted in SongUpload, minting song")
+            mintSong();
+        }
+    }, [props.songSubmitted]);
+
     async function onChange(e) {
         const file = e.target.files[0];
         setFile(file);
     }
     async function mintSong() {
-        console.log("MINT SONG")
+        // console.log("MINT SONG")
         try {
             const added = await ipfsclient.add(file);
             const url = `http://ipfs.infura.io/ipfs/${added.path}`
@@ -30,6 +56,7 @@ const SongUpload = (props) => {
             // updateFileUrl(url);
             const songtokenid = await createSongToken(props.songContract, props.songTitle);
             // setMintingSong(true);
+            setLastSongId(songtokenid.hash);
             console.log("songotkenis after createSongtoken", songtokenid)
             resetInput();
 
@@ -37,24 +64,22 @@ const SongUpload = (props) => {
             console.error(err);
         }
     }
-    if (props.songContract && mintingSong) {
-        console.log("listening for emission on", props.songContract);
-        props.songContract.on('TokenCreated', (idx, owner, addr) => {
-            console.log("TokenCreated event emitted");
-            console.log(idx, "::", owner, "::", addr);
-            console.log("listening for emitter")
-            setLastSongId(idx);
-            setSongMinted(true);
-            setMintingSong(false);
-        });
-    }
-   
-    if (props.songSubmitted && !mintingSong) {
-        props.setSongSubmitted(false);
-        setMintingSong(true);
-        setSongMinted(false);
-        console.log("Song has been submitted in SongUpload, minting song")
-        mintSong();
+
+    console.log("lastSongId, songMinted: " + lastSongId + " : " + songMinted);
+    console.log(lastSongId == -1);
+    var songComponent;
+    console.log("mintingSong && lastSongId: " + mintingSong + ":" + lastSongId);
+    if (mintingSong && lastSongId != -1) {
+        console.log("mintingSong && lastSongId: " + mintingSong + ":" + lastSongId);
+        songComponent = <div>
+            <p>Minting song...</p>
+        </div>
+    } else if(songMinted && lastSongId == -1) {
+        console.log("mintingSong && lastSongId: " + mintingSong + ":" + lastSongId);
+        songComponent = <div>
+            <p><Link to={`/song/${lastSongId}`}>{props.songTitle }</Link> has been minted!</p>
+            {/* <p>Song ID: {lastSongId}</p> */}
+        </div>
     }
     return (
            <Box
@@ -70,9 +95,10 @@ const SongUpload = (props) => {
       >
       
             <h2>Create new BlockSong Token!</h2>
-            {songMinted && lastSongId > -1 &&
+            { songComponent}
+            {/* {songMinted && lastSongId > -1 &&
                 <p>Song has been uploaded: <Link to={`/song/${lastSongId}`}>{props.songTitle }</Link></p>
-            }
+            } */}
                 <input type="file" ref={ref} onChange={onChange} />
         </Box>
     )

@@ -4,9 +4,10 @@ import SongImage from './SongImage';
 import SongMetadataForm from './SongMetadataForm';
 
 const UploadPage = (props) => {
-    console.log("RENDERING UPLOAD PAGE")
+    // console.log("RENDERING UPLOAD PAGE")
     const [songSubmitted, setSongSubmitted] = useState(false);
     const [songTitle, setSongTitle] = useState("");
+
     return (
         <div className="upload-page">
             <SongUpload

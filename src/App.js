@@ -19,11 +19,13 @@ const App = (props) => {
   // const [ipfsClient] = useState("ipfsClient");
   const [songContract, setSongSC] = useState(null);
   const dispatch = useDispatch()
-  
+  useEffect(() => {
+    dispatch(addContract(songContract));
+  }, [songContract])
   async function getSong() {
     const song = await getSongSC();
     setSongSC(song);
-    dispatch(addContract(song));
+    // dispatch(addContract(song));
   }
   if (songContract == null) {
     getSong();
@@ -34,9 +36,8 @@ const App = (props) => {
       <div className="App">
         <Routes>
             <Route path="/" element={<UploadPage songContract={ songContract}/>} />
-            <Route path="/song/:songId" element={<SongViewPage />} />
+            <Route path="/song/:songId" element={<SongViewPage songContract={ songContract}/>} />
             <Route path="/allsongs/" element={<ViewAllSongs />} />
-            {/* <Route path="/allsongs/" element={<ViewAllSongs songContract={songContract}/>} /> */}
         </Routes>
       </div>
     </main>

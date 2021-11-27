@@ -6,7 +6,6 @@ import { Button } from '@material-ui/core';
 const SongMetadataForm = (props) => {
   console.log("RENDERING METADATAFORM")
     const [songDesc, setSongDesc] = useState("");
-    // const [songIsSubmitted, setSongIsSubmitted] = useGlobalState("songIsSubmitted"); 
   const handleChange = (event) => {
         setSongDesc(event.target.value);
     };
