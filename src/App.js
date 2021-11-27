@@ -4,49 +4,39 @@ import SongViewPage from './components/SongViewPage';
 import ViewAllSongs from './components/ViewAllSongs';
 import getSongSC from './scripts/getSongSC';
 import { create } from 'ipfs-http-client';
-import React, { useState } from 'react';
-import { connect } from 'react-redux'
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux'
-// import { store, useGlobalState } from 'state-pool';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 import { addContract } from './redux/actions'
-// import { getNativeSelectUtilityClasses } from '@mui/material';
+// import config from "./config.json";
 
 
 const client = create('https://ipfs.infura.io:5001/api/v0')
-console.log("ipfsClient after initialized", client);
 // store.setState("ipfsClient", client);
 // store.setState("songIsSubmitted", false);
 // store.setState("songContract", null);
 const App = (props) => {
-  const [ipfsClient] = useState("ipfsClient");
-  // const [songContract, setSongSC] = useGlobalState("songContract");
+  // const [ipfsClient] = useState("ipfsClient");
   const [songContract, setSongSC] = useState(null);
   const dispatch = useDispatch()
   
-  // useEffect(() => {
-    
-  // }, [songContract]);
-  console.log("sc is", songContract);
   async function getSong() {
     const song = await getSongSC();
-    dispatch(addContract({ text: song, id: song.address }))
     setSongSC(song);
-    console.log("song SC ISSS:", song);
+    dispatch(addContract(song));
   }
   if (songContract == null) {
-    console.log("sc is null");
     getSong();
   }
-  console.log("ipfsClient in App functions", ipfsClient);
   return (
     <Router>
       <main>  
       <div className="App">
         <Routes>
-          <Route path="/" element={<UploadPage />} />
-          <Route path="/song/:songId" element={<SongViewPage />} />
-          <Route path="/allsongs/" element={<ViewAllSongs />} />
+            <Route path="/" element={<UploadPage songContract={ songContract}/>} />
+            <Route path="/song/:songId" element={<SongViewPage />} />
+            <Route path="/allsongs/" element={<ViewAllSongs />} />
+            {/* <Route path="/allsongs/" element={<ViewAllSongs songContract={songContract}/>} /> */}
         </Routes>
       </div>
     </main>

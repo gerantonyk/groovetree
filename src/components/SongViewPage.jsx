@@ -22,7 +22,6 @@ const SongViewPage = () => {
         if (currContract == null) {
             console.log("contract is null in Songviewpage");
             currContract = await getSongSC();
-            console.log("sc retrieved in SVPage", currContract);
             setSongContract(currContract);
             console.log("song  contract set in SVPage: ", songContract);
         }
