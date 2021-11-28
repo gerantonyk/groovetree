@@ -1,42 +1,56 @@
-//SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.0;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.2;
 
-import "hardhat/console.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract Song {
-    address private owner;
-    address private createdBy;
-    Token[] private tokens;
-    struct Token {
-        address owner;
-        string title;
+contract Song is ERC721, ERC721URIStorage, AccessControl {
+    using Counters for Counters.Counter;
+
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+    Counters.Counter private _tokenIdCounter;
+
+    constructor() ERC721("SONG", "SNG") {
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(MINTER_ROLE, msg.sender);
     }
 
-    constructor() {
-        owner = msg.sender;
-        createdBy = msg.sender;
+    function safeMint(address to, string memory uri)
+        public
+        onlyRole(MINTER_ROLE)
+    {
+        uint256 tokenId = _tokenIdCounter.current();
+        _tokenIdCounter.increment();
+        _safeMint(to, tokenId);
+        _setTokenURI(tokenId, uri);
     }
 
-    event TokenCreated(uint256 index, address owner, string title);
+    // The following functions are overrides required by Solidity.
 
-    function createToken(string calldata _title) public returns (uint256) {
-        // (bool success, ) = payable(address(owner)).call{value: msg.value}("");
-        // require(success, "failed transactions");
-        tokens.push(Token(msg.sender, _title));
-        emit TokenCreated(tokens.length - 1, msg.sender, _title);
-        return tokens.length - 1;
+    function _burn(uint256 tokenId)
+        internal
+        override(ERC721, ERC721URIStorage)
+    {
+        super._burn(tokenId);
     }
 
-    function getOwner() public view returns (address) {
-        return owner;
+    function tokenURI(uint256 tokenId)
+        public
+        view
+        override(ERC721, ERC721URIStorage)
+        returns (string memory)
+    {
+        return super.tokenURI(tokenId);
     }
 
-    function getToken(uint256 _id) public view returns (Token memory) {
-        // require(msg.sender == owner, "Only the owner can view the token");
-        return tokens[_id];
-    }
-
-    function getTokens() public view returns (Token[] memory) {
-        return tokens;
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        override(ERC721, AccessControl)
+        returns (bool)
+    {
+        return super.supportsInterface(interfaceId);
     }
 }
