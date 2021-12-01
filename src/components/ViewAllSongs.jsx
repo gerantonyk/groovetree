@@ -20,7 +20,8 @@ const ViewAllSongs = () => {
         return (
             <div>
                 <h1>All Songs</h1>
-                {tokens.map(({ title, owner }, index) => (
+                {/*{tokens.map(({ title, owner }, index) => (*/}
+                {tokens.map(({ title, owner,index }) => (
                     <p key={index}>{index }. <Link to={`/song/${index}`}>{title }</Link></p>
                 ))}
             </div>

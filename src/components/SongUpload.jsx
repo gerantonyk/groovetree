@@ -54,7 +54,7 @@ const SongUpload = (props) => {
             const url = `http://ipfs.infura.io/ipfs/${added.path}`
             console.log('added:', url);
             // updateFileUrl(url);
-            const songtokenid = await createSongToken(props.songContract, props.songTitle);
+            const songtokenid = await createSongToken(props.songContract, url);
             // setMintingSong(true);
             setLastSongId(songtokenid.hash);
             console.log("songotkenis after createSongtoken", songtokenid)
