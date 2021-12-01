@@ -1,6 +1,8 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
-
+//bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
+const DEF_ADMIN_ROLE = ethers.utils.formatBytes32String("0x00");
+const ZERO_ACCOUNT = "0x0000000000000000000000000000000000000000"
 describe("Song", function () {
      beforeEach(async function ()  {
         this.accounts = await ethers.getSigners();
@@ -17,24 +19,23 @@ describe("Song", function () {
     it("should deploy", async function () {
         expect(this.song_contract.address).to.be.a('string');
         expect(this.song_contract.address.length).to.be.equal(42);
-        const owner = await this.song_contract.getOwner();
-        console.log("owner", owner);
-        expect(owner).to.be.equal(this.owner.address);
+        // const owner = await this.song_contract.getRoleAdmin(DEF_ADMIN_ROLE.valueOf());
+        // console.log("owner", owner);
+        // expect(owner).to.be.equal(this.owner.address);
     });
     it("should create a token", async function () {
-        expect(await this.song_contract.connect(this.user).createToken("TestSong", "https://testuri"))
-            .to.emit(this.song_contract, "TokenCreated")
-            .withArgs(0, this.user.address, "TestSong", "https://testuri");
-        const token = await this.song_contract.getToken(0);
-        expect(token.title).to.be.equal("TestSong");
-        expect(token.owner).to.be.equal(this.user.address);
-        expect(await this.song_contract.connect(this.user2).createToken("TestSongII", "https://testuriII"))
-            .to.emit(this.song_contract, "TokenCreated")
-            .withArgs(1, this.user2.address, "TestSongII", "https://testuriII");;
-        const tokens = await this.song_contract.getTokens();
-        console.log(tokens)
-        expect(tokens[0][0].title).to.be.equal("TestSong");
-        expect(tokens[1][0].title).to.be.equal("TestSongII");
+        expect(await this.song_contract.connect(this.user).mintSong("https://testuri"))
+            .to.emit(this.song_contract, "Transfer")
+            .withArgs(ZERO_ACCOUNT, this.user.address, 0);
+        expect(await this.song_contract.tokenURI(0)).to.be.equal("https://testuri");
+        // const tokenuri = await this.song_contract.tokenURI(0);
+        expect(await this.song_contract.connect(this.owner).mintSong("https://testuriII"))
+            .to.emit(this.song_contract, "Transfer")
+            .withArgs(ZERO_ACCOUNT, this.owner.address, 1);
+        // const tokenuri = await this.song_contract.tokenURI(1);
+        expect(await this.song_contract.tokenURI(1)).to.be.equal("https://testuriII");
+        alltokens = await this.song_contract.getTokenCount();
+        expect(alltokens).to.be.equal(2);
         // console.log("tokens", tokens);
         // console.log("token", token);
     });

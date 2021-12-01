@@ -11,10 +11,8 @@ import { addContract } from './redux/actions'
 // import config from "./config.json";
 
 
-const client = create('https://ipfs.infura.io:5001/api/v0')
-// store.setState("ipfsClient", client);
-// store.setState("songIsSubmitted", false);
-// store.setState("songContract", null);
+// const client = create('https://ipfs.infura.io:5001/api/v0')
+
 const App = (props) => {
   // const [ipfsClient] = useState("ipfsClient");
   const [songContract, setSongSC] = useState(null);

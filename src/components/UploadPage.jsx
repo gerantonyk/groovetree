@@ -6,21 +6,28 @@ import SongMetadataForm from './SongMetadataForm';
 const UploadPage = (props) => {
     // console.log("RENDERING UPLOAD PAGE")
     const [songSubmitted, setSongSubmitted] = useState(false);
-    const [songTitle, setSongTitle] = useState("");
-
+    // const [songTitle, setSongTitle] = useState("");
+    const [songMetaData, setSongMetaData] = useState({});
+    const submitSong = (data, submitted) => {
+        setSongMetaData(data);
+        if(submitted) {
+            setSongSubmitted(true);
+        }
+    }
     return (
         <div className="upload-page">
             <SongUpload
                 songSubmitted={songSubmitted}
                 setSongSubmitted={setSongSubmitted}
                 songContract={props.songContract}
-                songTitle={songTitle }
+                songMetaData={songMetaData}
+                // songTi/tle={songTitle }
             />
             <div className="song-upload">
                 <SongImage/>
                 <SongMetadataForm
-                    setSongSubmitted={setSongSubmitted}
-                    setSongTitle={setSongTitle}
+                    submitSong={submitSong }
+                    // setSongSubmitted={setSongSubmitted}
                 />
             </div>
         </div>

@@ -16,12 +16,14 @@ const SongViewPage = (props) => {
     async function getSongTokenFromBlockchain() {
         const song = await getSong(props.songContract, songId).then(
             (song) => {
+                console.log("songuri", song)
                 setSongToken(song);
             });
         console.log("song in songview component", song);
     }
     if (!songLoaded) {
         if (props.songContract) {
+            console.log("songContract in SVP", props.songContract)
             getSongTokenFromBlockchain();
             console.log("Loading")
         } else {
@@ -35,12 +37,13 @@ const SongViewPage = (props) => {
     } else {
         return (
             <div>
-                <h1>{songToken.title}</h1>
+                <h1>Song Title: { songToken.title}</h1>
                 <h2>{songToken.songId}</h2>
                 <div className="song-upload">
                     <SongImage />
-                    <p>Owner Address: {songToken.owner}</p>
                 </div>
+                <p>Artist: {songToken.artist}</p>
+                <p>Description: {songToken.desc}</p>
             </div >
         )
     }

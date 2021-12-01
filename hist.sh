@@ -5,3 +5,5 @@ npm install ipfs-http-client
 npx hardhat test
 npm install state-pool
 npm install @mui/material @emotion/react @emotion/styled
+npm install multiformats
+npm install it-all
