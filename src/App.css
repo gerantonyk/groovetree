@@ -11,6 +11,25 @@
   pointer-events: none;
 }
 
+.song-image {
+  height: 40vmin;
+  width: 40vmin;
+  pointer-events: none;
+}
+.song-list-row {
+  border: #042731 solid 1px;
+  padding: 1%;
+}
+.song-list-row img {
+  height: 2vmin;
+  width: 2vmin;
+  /* padding: 5vmin; */
+}
+img {
+  border: #042731 solid 1px;
+  padding: 1%;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

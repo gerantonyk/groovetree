@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Box from '@mui/material/Box';
 import { Link } from "react-router-dom";
 import getSongs from '../scripts/getSongs';
 import {useSelector} from 'react-redux'
@@ -20,8 +21,17 @@ const ViewAllSongs = () => {
         return (
             <div>
                 <h1>All Songs</h1>
-                {tokens.map(({ title, owner }, index) => (
-                    <p key={index}>{index }. <Link to={`/song/${index}`}>{title }</Link></p>
+                {tokens.map(({ title, artist, image }, index) => (
+                    <Box sx={{
+                        flexDirection: 'row',
+                        display: 'flex',
+                    }} className="song-list-row">
+                        <img src={image} />
+                        <p key={index}>
+                            <Link to={`/song/${index}`}>{title}</Link>
+                            by {artist}
+                        </p>
+                    </Box>
                 ))}
             </div>
         );

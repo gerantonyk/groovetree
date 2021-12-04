@@ -55,6 +55,8 @@ async function getSong() {
         collect
     )
     console.log("output", output);
+    const json = JSON.stringify(output);
+    console.log("json", json)
     // const outstring = toString(output);
     // console.log("outstring", outstring);
     // const outstringII = output.toString();
@@ -73,21 +75,24 @@ async function simpleCat() {
         // chunks of data are returned as a Buffer, convert it back to a string
         data += chunk.toString()
     }
-
-    console.log(data)
+    console.log(audiofile.toString())
+    const audiostring = JSON.parse(data);
+    console.log("AUDIO STRING TEST", audiostring);
+    // console.log(data)
 }
-// async function catFile() {
-//     let songdata = {}
-//     for await (const data of ipfs.cat('QmYZ3dSEorNCoEJTsccmqAHC6PvyPqLjL9ZuCJjwJDH4dx')) {
-//         console.log(data.toString())
-//         const parseuri = JSON.parse(data);
-//         songdata.audioUri = "QmapPj7koCCMp241CAhwZV413K3FrqVnYdKC2GeTQHsCuF"
-//         for await (const audiofile of ipfs.cat(songdata.audioUri)) {
-//             songdata.audiofile = audiofile
-//             console.log("retrieved audiofile", songdata.audiofile);
-//         }
-//     }
-// }
+async function catFile() {
+    let songdata = {}
+    for await (const data of ipfs.cat('QmYZ3dSEorNCoEJTsccmqAHC6PvyPqLjL9ZuCJjwJDH4dx')) {
+        console.log(data.toString())
+        const parseuri = JSON.parse(data);
+        songdata.audioUri = "QmapPj7koCCMp241CAhwZV413K3FrqVnYdKC2GeTQHsCuF"
+        for await (const audiofile of ipfs.cat(songdata.audioUri)) {
+            
+            songdata.audiofile = audiofile
+            console.log("retrieved audiofile", songdata.audiofile);
+        }
+    }
+}
 
 // catFile()
 // simpleCat();

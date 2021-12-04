@@ -5,7 +5,7 @@ import { createSongToken } from '../scripts/mintsong';
 import {ipfsUri} from '../scripts/ipfs';
 import { Link } from "react-router-dom";
 
-const ipfsclient = create('https://ipfs.infura.io:5001/api/v0')
+// const ipfsclient = create('https://ipfs.infura.io:5001/api/v0')
 
 const SongUpload = (props) => {
     console.log("RENDERING SongUpload", props.songSubmitted);
@@ -54,7 +54,8 @@ const SongUpload = (props) => {
         try {
             var data = {
                 ...props.songMetaData,
-                audio: file
+                audio: file,
+                image: props.songImage
             }
             // const added = await ipfsclient.add(file);
             // const url = `http://ipfs.infura.io/ipfs/${added.path}`
@@ -72,17 +73,17 @@ const SongUpload = (props) => {
         }
     }
 
-    console.log("lastSongId, songMinted: " + lastSongId + " : " + songMinted);
-    console.log(lastSongId == -1);
+    // console.log("lastSongId, songMinted: " + lastSongId + " : " + songMinted);
+    // console.log(lastSongId === -1);
     var songComponent;
-    console.log("mintingSong && lastSongId: " + mintingSong + ":" + lastSongId);
-    if (mintingSong && lastSongId != -1) {
-        console.log("mintingSong && lastSongId: " + mintingSong + ":" + lastSongId);
+    // console.log("mintingSong && lastSongId: " + mintingSong + ":" + lastSongId);
+    if (mintingSong && lastSongId !== -1) {
+        // console.log("mintingSong && lastSongId: " + mintingSong + ":" + lastSongId);
         songComponent = <div>
             <p>Minting song...</p>
         </div>
-    } else if(songMinted && lastSongId == -1) {
-        console.log("mintingSong && lastSongId: " + mintingSong + ":" + lastSongId);
+    } else if(songMinted && lastSongId === -1) {
+        // console.log("mintingSong && lastSongId: " + mintingSong + ":" + lastSongId);
         songComponent = <div>
             <p><Link to={`/song/${lastSongId}`}>{props.songTitle }</Link> has been minted!</p>
             {/* <p>Song ID: {lastSongId}</p> */}

@@ -19,14 +19,12 @@ const SongMetadataForm = (props) => {
       setSongArtist(event.target.value);
     }
     async function handleClick() {
-      // props.setSongTitle(songTitle);
       console.log("set song submitted in SMetaDF to true");
       props.submitSong({
         title: songTitle,
         artist: songArtist,
         desc: songDesc
       }, true);
-      // props.setSongSubmitted(true);
     }
     return (
         <div className="meta-data-form">
@@ -47,7 +45,7 @@ const SongMetadataForm = (props) => {
           variant="standard"
           onChange={handleTitleChange}
           value={songTitle}
-          defaultValue="Title!!"
+          placeholder="Title!!"
         />
         <TextField
             id="song artist"

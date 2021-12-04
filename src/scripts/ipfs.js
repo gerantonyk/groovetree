@@ -13,6 +13,11 @@ async function ipfsUri(data) {
     ipfsData.audio = `https://gateway.ipfs.io/ipfs/${added.path}`
     console.log("loaded audio", added);
   }
+  if (data.image) {
+    const added = await ipfs.add(data.image);
+    ipfsData.image = `https://gateway.ipfs.io/ipfs/${added.path}`
+    console.log("loaded image", added); 
+  }
 
   ipfsData.title = (data.title) ? data.title : "Untitled"
   ipfsData.desc = (data.desc) ? data.desc : "No description"
@@ -24,8 +29,8 @@ async function ipfsUri(data) {
     content: JSON.stringify(ipfsData)
   };
   const result = await ipfs.add(file);
-    console.log(result);
-    return `https://gateway.ipfs.io/ipfs/${result.path}`;
+  console.log("IPFS URI Upload: " + result);
+  return `https://gateway.ipfs.io/ipfs/${result.path}`;
 }
 
 export { ipfsUri };

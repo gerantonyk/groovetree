@@ -23,27 +23,26 @@ const SongViewPage = (props) => {
     }
     if (!songLoaded) {
         if (props.songContract) {
-            console.log("songContract in SVP", props.songContract)
+            // console.log("songContract in SVP", props.songContract)
             getSongTokenFromBlockchain();
-            console.log("Loading")
-        } else {
-            console.log("No contract in SongViewPage")
-        }
+        } 
         return (
             <div>
                 <h1>Loading...</h1>
             </div>
         );
     } else {
+        console.log("song token audio:", songToken.audio)
         return (
             <div>
                 <h1>Song Title: { songToken.title}</h1>
                 <h2>{songToken.songId}</h2>
-                <div className="song-upload">
-                    <SongImage />
-                </div>
                 <p>Artist: {songToken.artist}</p>
                 <p>Description: {songToken.desc}</p>
+                <SongImage
+                    songImage={songToken.image}
+                    canUploadSong={ false}
+                />
             </div >
         )
     }
