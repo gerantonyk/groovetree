@@ -28,5 +28,10 @@ Run the following shell script to execute hardhat test and THEN copy the necessa
 `npm start` -> Serve the react app on [localhost://3000](http://localhost:3001/)
 
 
-
+### Environment Variables 
+Create a .env file with the following properties
+```
+RINKEBY_URL=<Get from Alchemy>
+RINKEBY_PRIVATE_KEY=<The Private Key that will deploying the contract>
+```
 
