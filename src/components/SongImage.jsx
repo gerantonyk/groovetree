@@ -2,7 +2,6 @@ import placeholderImage from '../resources/placeholder.png';
 import React, { useState, useEffect, useRef } from 'react';
 
 const SongImage = (props) => {
-    console.log("Rendering SongImage.jsx");
     const [image, setImage] = useState(placeholderImage);
     const ref = useRef();
     useEffect(() => {
@@ -19,7 +18,7 @@ const SongImage = (props) => {
 
     return (
         <div>
-            <img src={props.songImage} className="song-image" alt="song image" />
+            <img src={image} className="song-image" alt="song image" />
             {props.canUpload &&
                 <input id='file' type="file" ref={ref} onChange={onChange} />
             }

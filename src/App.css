@@ -66,6 +66,19 @@ img {
   color: #0e2251;
 }
 
+.navbar {
+  color: #0e2251;
+  background-color: #f8ccf4;
+}
+.appbar {
+  color: #0e2251;
+  background-color: #f8ccf4;
+}
+.toolbar {
+  color: #0e2251;
+  background-color: #f8ccf4;
+}
+
 .song-upload {
   display: flex;
   flex-direction: row;

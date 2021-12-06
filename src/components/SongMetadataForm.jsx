@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import { Button } from '@material-ui/core';
 
 const SongMetadataForm = (props) => {
-  console.log("RENDERING METADATAFORM")
     const [songDesc, setSongDesc] = useState("");
     const [songTitle, setSongTitle] = useState("");
     const [songArtist, setSongArtist] = useState("");

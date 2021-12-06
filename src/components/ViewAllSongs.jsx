@@ -26,7 +26,7 @@ const ViewAllSongs = () => {
                         flexDirection: 'row',
                         display: 'flex',
                     }} className="song-list-row">
-                        <img src={image} />
+                        <img src={image} alt=""/>
                         <p key={index}>
                             <Link to={`/song/${index}`}>{title}</Link>
                             by {artist}
