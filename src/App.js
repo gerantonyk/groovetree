@@ -34,8 +34,8 @@ const App = (props) => {
         <Routes>
             <Route path="/" element={<UploadPage songContract={ songContract}/>} />
             <Route path="/song/:songId" element={<SongViewPage songContract={ songContract}/>} />
-            <Route path="/allsongs/" element={<ViewAllSongs />} />
-            <Route path="/mysongs/" element={<ViewAllSongs />} />
+            <Route path="/allsongs/" element={<ViewAllSongs />} mySongs={false}/>
+            <Route path="/mysongs/" element={<ViewAllSongs />} mySongs={true}/>
         </Routes>
       </div>
     </main>
