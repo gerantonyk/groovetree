@@ -1,22 +1,16 @@
 import placeholderImage from '../resources/placeholder.png';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 
 const SongImage = (props) => {
-    const [image, setImage] = useState(placeholderImage);
     const ref = useRef();
-    useEffect(() => {
-        if (props.songImage) {
-            setImage(props.image);
-        }
-    }, []);
+    console.log("Render SongImage props image: ", props.songImage );
+    var image = props.songImage ? props.songImage : placeholderImage;
     async function onChange(e) {
         const file = e.target.files[0];
-        const uploadedImageUrl = URL.createObjectURL(file);
-        setImage(uploadedImageUrl)
         props.setSongImage(file);
     }
 
-    return (
+    return ( 
         <div>
             <img src={image} className="song-image" alt="song image" />
             {props.canUpload &&

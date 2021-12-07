@@ -8,7 +8,14 @@ const all = require('it-all');
 
 async function getSong(sc, songId) {
     // console.log("GETTING SINGLE SONG songID");
-    var tokenUri = await sc.tokenURI(songId);
+    try {
+        var tokenUri = await sc.tokenURI(songId);
+    } catch (e) {
+        console.log("ERROR: ", e);
+        return null;
+    }
+    
+    console.log("tokenUri", tokenUri);
     if (tokenUri.startsWith(IPFS_BASE_PATH)) {
         tokenUri = tokenUri.replace(IPFS_BASE_PATH, "");
     }
