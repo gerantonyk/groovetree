@@ -7,7 +7,7 @@ const { toString } = require('uint8arrays/to-string');
 const all = require('it-all');
 
 async function getSong(sc, songId) {
-    // console.log("GETTING SINGLE SONG songID");
+    console.log("GETTING SINGLE SONG songID:", songId);
     try {
         var tokenUri = await sc.tokenURI(songId);
     } catch (e) {

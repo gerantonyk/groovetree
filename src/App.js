@@ -9,10 +9,8 @@ import { useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 import { addContract } from './redux/actions'
 // import config from "./config.json";
-// const client = create('https://ipfs.infura.io:5001/api/v0')
 
 const App = (props) => {
-  // const [ipfsClient] = useState("ipfsClient");
   const [songContract, setSongSC] = useState(null);
   const dispatch = useDispatch()
   useEffect(() => {
@@ -21,7 +19,7 @@ const App = (props) => {
   async function getSong() {
     const song = await getSongSC();
     setSongSC(song);
-    // dispatch(addContract(song));
+    dispatch(addContract(song));
   }
   if (songContract == null) {
     getSong();
@@ -34,7 +32,7 @@ const App = (props) => {
         <Routes>
             <Route path="/" element={<UploadPage songContract={ songContract}/>} />
             <Route path="/song/:songId" element={<SongViewPage songContract={ songContract}/>} />
-            <Route path="/allsongs/" element={<ViewAllSongs />} mySongs={false}/>
+            <Route path="/allsongs/" element={<ViewAllSongs />} songContract={ songContract} mySongs={false}/>
             <Route path="/mysongs/" element={<ViewAllSongs />} mySongs={true}/>
         </Routes>
       </div>
@@ -43,12 +41,4 @@ const App = (props) => {
   );
 }
 
-// const mapDispatchToProps = dispatch => {
-//     console.log("songContract in mapDispath", songContract);
-//     return {
-//         addContract: songContract => dispatch(addContract(songContract))
-//     }
-// }
-// export default connect(mapDispatchToProps)(App);
-// export default connect(mapStateToProps)(App);
 export default App;
