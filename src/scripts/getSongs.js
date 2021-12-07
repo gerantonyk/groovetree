@@ -13,16 +13,23 @@ async function getSongs(sc, mySongs) {
     console.log("sc for getSongs", sc)
     const tokenData = []
     if (mySongs) {
-        console.log("mySongs", mySongs)
         return mySongs
     } else {
-        const count = (await sc.getTokenCount()).toNumber();
-        const tokenCount = count;
-        console.log("token count", tokenCount)
-        for (let i = 1; i <= tokenCount; i++) {
-            tokenData.push(await getSong(sc, i));
+        const filter = await sc.filters.TokenCreated()
+
+        let events = await sc.queryFilter(filter)  
+
+        const songtokens = events.map(event=> {return {
+            index:event.args.index.toNumber(),
+            uri:event.args.tokenU,
+            owner:event.args.owner
         }
-        console.log("tokendata",tokenData);
+        })
+        for (let songtoken of songtokens) {
+            const song = await getSong(sc, songtoken.index)
+            tokenData.push({...song, ...songtoken})
+        }
+        
     }
     return tokenData;
 }
