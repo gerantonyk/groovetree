@@ -52,7 +52,6 @@ const SongMetadataForm = (props) => {
             onChange={handleArtistChange}
             value={songArtist }
             variant="standard"
-            // defaultValue="Test ARTIST"
           />
         <TextField
           id="outlined-multiline-flexible"
@@ -63,7 +62,6 @@ const SongMetadataForm = (props) => {
           onChange={handleDescChange}
           variant="standard"
           placeholder="Song description and notes"
-          // defaultValue="Test Song description and notes"
           />       
         </Box>
         <Button variant="contained" onClick={handleClick}>Upload Song</Button>

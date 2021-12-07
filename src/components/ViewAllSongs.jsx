@@ -7,14 +7,17 @@ import {useSelector} from 'react-redux'
 const ViewAllSongs = (props) => {
     const [tokens, setTokens] = useState(null);
     const songContract = useSelector((state) => state.songContract)
-
     async function getTokens() {
-        if (songContract != null) {
-            let tokens = await getSongs(songContract, props.mySongs);
-            setTokens(tokens);
-        }
+        let tokens = await getSongs(songContract, props.mySongs);
+        setTokens(tokens);
     }
-    if (tokens == null) {
+    if (songContract == null) {
+        return (
+            <Box>
+                <h1>Loading Smart Contract...</h1>
+            </Box>
+        )
+    } else if (tokens == null) {
         getTokens();
         return (<div>Loading...</div>)
     } else {
