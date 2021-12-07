@@ -1,26 +1,42 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect} from 'react';
 import SongUpload from './SongUpload';
 import SongImage from './SongImage';
 import SongMetadataForm from './SongMetadataForm';
 
 const UploadPage = (props) => {
-    // console.log("RENDERING UPLOAD PAGE")
     const [songSubmitted, setSongSubmitted] = useState(false);
-    const [songTitle, setSongTitle] = useState("");
-
+    const [songMetaData, setSongMetaData] = useState({});
+    const [uploadedSongImageFile, setUploadedSongImageFile] = useState(null);
+    const [uploadedSongImageUrl, setUploadedSongImageUrl] = useState(null);
+    useEffect(() => {
+        if(uploadedSongImageFile) {
+            setUploadedSongImageUrl(URL.createObjectURL(uploadedSongImageFile));
+        }
+    }, [uploadedSongImageFile])
+    const submitSong = (data, submitted) => {
+        setSongMetaData(data);
+        if(submitted) {
+            setSongSubmitted(true);
+        }
+    }
+    
     return (
         <div className="upload-page">
             <SongUpload
                 songSubmitted={songSubmitted}
                 setSongSubmitted={setSongSubmitted}
                 songContract={props.songContract}
-                songTitle={songTitle }
+                songImage={uploadedSongImageFile}
+                songMetaData={songMetaData}
             />
             <div className="song-upload">
-                <SongImage/>
+                <SongImage
+                    songImage={uploadedSongImageUrl}
+                    setSongImage={setUploadedSongImageFile}
+                    canUpload={ true}
+                />
                 <SongMetadataForm
-                    setSongSubmitted={setSongSubmitted}
-                    setSongTitle={setSongTitle}
+                    submitSong={submitSong }
                 />
             </div>
         </div>

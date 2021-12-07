@@ -2,9 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { create } from 'ipfs-http-client';
 import { createSongToken } from '../scripts/mintsong';
+import {ipfsUri} from '../scripts/ipfs';
 import { Link } from "react-router-dom";
 
-const ipfsclient = create('https://ipfs.infura.io:5001/api/v0')
+// const ipfsclient = create('https://ipfs.infura.io:5001/api/v0')
 
 const SongUpload = (props) => {
     console.log("RENDERING SongUpload", props.songSubmitted);
@@ -24,10 +25,10 @@ const SongUpload = (props) => {
         }
     }, [mintingSong])
     async function listenForTokenCreation() {
-        props.songContract.on('TokenCreated', (idx, owner, addr) => {
+        props.songContract.on('Transfer', (from, to, tokenId) => {
             console.log("TokenCreated event emitted");
-            console.log(idx, "::", owner, "::", addr);
-            setLastSongId(idx);
+            console.log(from, "::", to, "::", tokenId);
+            setLastSongId(tokenId);
             setSongMinted(true);
             setMintingSong(false);
         });
@@ -49,12 +50,19 @@ const SongUpload = (props) => {
     }
     async function mintSong() {
         // console.log("MINT SONG")
+        console.log("metadata props in Song upload", props.songMetaData);
         try {
-            const added = await ipfsclient.add(file);
-            const url = `http://ipfs.infura.io/ipfs/${added.path}`
-            console.log('added:', url);
+            var data = {
+                ...props.songMetaData,
+                audio: file,
+                image: props.songImage
+            }
+            // const added = await ipfsclient.add(file);
+            // const url = `http://ipfs.infura.io/ipfs/${added.path}`
+            const uri = await ipfsUri(data);
+            console.log('uri created:', uri);
             // updateFileUrl(url);
-            const songtokenid = await createSongToken(props.songContract, props.songTitle);
+            const songtokenid = await createSongToken(props.songContract, uri);
             // setMintingSong(true);
             setLastSongId(songtokenid.hash);
             console.log("songotkenis after createSongtoken", songtokenid)
@@ -65,17 +73,17 @@ const SongUpload = (props) => {
         }
     }
 
-    console.log("lastSongId, songMinted: " + lastSongId + " : " + songMinted);
-    console.log(lastSongId == -1);
+    // console.log("lastSongId, songMinted: " + lastSongId + " : " + songMinted);
+    // console.log(lastSongId === -1);
     var songComponent;
-    console.log("mintingSong && lastSongId: " + mintingSong + ":" + lastSongId);
-    if (mintingSong && lastSongId != -1) {
-        console.log("mintingSong && lastSongId: " + mintingSong + ":" + lastSongId);
+    // console.log("mintingSong && lastSongId: " + mintingSong + ":" + lastSongId);
+    if (mintingSong && lastSongId !== -1) {
+        // console.log("mintingSong && lastSongId: " + mintingSong + ":" + lastSongId);
         songComponent = <div>
             <p>Minting song...</p>
         </div>
-    } else if(songMinted && lastSongId == -1) {
-        console.log("mintingSong && lastSongId: " + mintingSong + ":" + lastSongId);
+    } else if(songMinted && lastSongId === -1) {
+        // console.log("mintingSong && lastSongId: " + mintingSong + ":" + lastSongId);
         songComponent = <div>
             <p><Link to={`/song/${lastSongId}`}>{props.songTitle }</Link> has been minted!</p>
             {/* <p>Song ID: {lastSongId}</p> */}

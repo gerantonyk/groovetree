@@ -1,5 +1,6 @@
 const ethers = require('ethers')
 const hre = require('hardhat');
+
 require('dotenv').config();
 
 async function deploy() {
@@ -14,6 +15,7 @@ async function deploy() {
 
   console.log("Song SC  Address: ", song.address);
   await song.deployed();
+  //TODO update config with new SC. 
 }
 
 deploy().then(() => process.exit(0)).catch(error => {
