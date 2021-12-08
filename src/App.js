@@ -3,6 +3,7 @@ import UploadPage from './components/UploadPage';
 import SongViewPage from './components/SongViewPage';
 import ViewAllSongs from './components/ViewAllSongs';
 import getContracts from './scripts/getContracts';
+import Web3 from './components/Web3';
 import NavBar from './components/NavBar';
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux'
@@ -39,13 +40,16 @@ const web3Modal = new Web3Modal({
 const App = (props) => {
   const [musicNftContract, setMusicNftSC] = useState(null);
   const [marketContract, setMarketSC] = useState(null);
+  const [account, setAccount] = useState({ connected: false });
   const dispatch = useDispatch()
+  
   useEffect(() => {
     dispatch(addMusicNftContract(musicNftContract));
   }, [musicNftContract])
   useEffect(() => {
     dispatch(addMarketContract(marketContract));
   }, [marketContract])
+  
   async function getSmartContracts() {
     const [musicNft, market] = await getContracts();
     setMusicNftSC(musicNft);
@@ -56,26 +60,8 @@ const App = (props) => {
   if (musicNftContract == null || marketContract == null) {
     getSmartContracts();
   }
-  return (
-    <Router>
-      <main>
-      <div className="App">
-        <NavBar web3Modal={<Web3 />} />
-        <Routes>
-            <Route path="/" element={<UploadPage songContract={ musicNftContract}/>} />
-            <Route path="/song/:songId" element={<SongViewPage songContract={ musicNftContract}/>} />
-            <Route path="/allsongs/" element={<ViewAllSongs />} songContract={ musicNftContract} mySongs={false}/>
-            <Route path="/mysongs/" element={<ViewAllSongs />} mySongs={true}/>
-        </Routes>
-      </div>
-    </main>
-    </Router>
-  );
-}
 
-function Web3() {
-  const [account, setAccount] = useState({ connected: false });
-
+  /******Functions that connect use to wallet *******/
   async function connect() {
     const web3ModalProvider = await web3Modal.connect();
     const provider = new ethers.providers.Web3Provider(web3ModalProvider);
@@ -114,30 +100,24 @@ function Web3() {
     }
   }
 
-  if (!account.connected) {
-    return (
-      <button className="button" onClick={connect}>
-        Connect Wallet
-      </button>
-    )
-  }
-  else {
-    return (
-      <div className="account">
-        <div>
-          {"Connected Address: " + account.address}
-        </div>
-        <div>
-          {"Account Balance: " + account.balance}
-        </div>
-        {account.isVerified
-          ? "Verified!"
-          : <button className="button" onClick={signMessage}>Verify Account</button>
-        }
-      </div>
-    )
-  }
+/****** Functions that connect use to wallet *******/
 
+  return (
+    <Router>
+      <main>
+        <div className="App">
+          <NavBar web3Modal={<Web3 account={account} connect={connect} signMessage={signMessage}/>} />
+
+          <Routes>
+            <Route path="/" element={<UploadPage songContract={musicNftContract}/>} />
+            <Route path="/song/:songId" element={<SongViewPage songContract={musicNftContract} />} />
+            <Route path="/allsongs/" element={<ViewAllSongs />} songContract={musicNftContract} mySongs={false} />
+            <Route path="/mysongs/" element={<ViewAllSongs />} mySongs={true} />
+          </Routes>
+        </div>
+      </main>
+    </Router>
+  );
 }
 
 export default App;
