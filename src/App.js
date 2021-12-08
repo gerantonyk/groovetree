@@ -51,15 +51,13 @@ const App = (props) => {
   }, [marketContract, dispatch])
   
   async function getSmartContracts() {
-    if(!account.provider) {
+    if(!account.signer) {
       console.log("Must connect your wallet BEFORE getting smart contract"); 
       return;
     }
-    const [musicNft, market] = await getContracts(account.provider);
+    const [musicNft, market] = await getContracts(account.signer);
     setMusicNftSC(musicNft);
     setMarketSC(market);
-    // dispatch(addContract(market));
-    // dispatch(addContract(musicNft));
   }
   
   if (musicNftContract == null || marketContract == null) {
@@ -112,7 +110,7 @@ const App = (props) => {
           <NavBar web3Modal={<Web3 account={account} connect={connect} signMessage={signMessage}/>} />
 
           <Routes>
-            <Route path="/" element={<UploadPage songContract={musicNftContract}/>} />
+            <Route path="/" element={<UploadPage musicNftContract={musicNftContract} account={account}/>} />
             <Route path="/song/:songId" element={<SongViewPage musicNftContract={musicNftContract} marketContract={marketContract}/>} />
             <Route
               path="/allsongs/"
