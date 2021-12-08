@@ -14,6 +14,9 @@ const UploadPage = (props) => {
         }
     }, [uploadedSongImageFile])
     const submitSong = (data, submitted) => {
+        if(!props.songContract){
+            window.alert("Make sure to connect to a wallet first!"); 
+        }
         console.log("submit song in UpladoadPage",submitted)
         setSongMetaData(data);
         console.log("submit song in UpladoadPage")

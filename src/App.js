@@ -51,12 +51,17 @@ const App = (props) => {
   }, [marketContract])
   
   async function getSmartContracts() {
-    const [musicNft, market] = await getContracts();
+    if(!account.provider) {
+      console.log("Must connect your wallet BEFORE getting smart contract"); 
+      return;
+    }
+    const [musicNft, market] = await getContracts(account.provider);
     setMusicNftSC(musicNft);
     setMarketSC(market);
     // dispatch(addContract(market));
     // dispatch(addContract(musicNft));
   }
+  
   if (musicNftContract == null || marketContract == null) {
     getSmartContracts();
   }
@@ -100,8 +105,6 @@ const App = (props) => {
     }
   }
 
-/****** Functions that connect use to wallet *******/
-
   return (
     <Router>
       <main>
@@ -111,8 +114,8 @@ const App = (props) => {
           <Routes>
             <Route path="/" element={<UploadPage songContract={musicNftContract}/>} />
             <Route path="/song/:songId" element={<SongViewPage songContract={musicNftContract} />} />
-            <Route path="/allsongs/" element={<ViewAllSongs />} songContract={musicNftContract} mySongs={false} />
-            <Route path="/mysongs/" element={<ViewAllSongs />} mySongs={true} />
+            <Route path="/allsongs/" element={<ViewAllSongs mySongs={false} account={account}/>} songContract={musicNftContract} />
+            <Route path="/mysongs/" element={<ViewAllSongs mySongs={true} account={account}/>}  />
           </Routes>
         </div>
       </main>
