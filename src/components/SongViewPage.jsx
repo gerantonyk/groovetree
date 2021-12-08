@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import SongImage from './SongImage'
+import {ethers} from 'ethers';
 import Box from '@mui/material/Box';
 import { useParams } from "react-router-dom";
 import getSong from '../scripts/getSong';
@@ -115,17 +116,22 @@ const SongViewPage = (props) => {
                 }
                 {
                     songToken.offers &&
-                    songToken.offers.map(({ args}, idx) => (
-                    <Box sx={{
-                        flexDirection: 'column',
-                        display: 'flex',
-                    }} className="song-offer-row">
-                        <p key={idx + ":" + args.bidder + ":" + args.price.toNumber()}>
-                                {args.bidder} " for " {args.price.toNumber()}
+
+                    <div>
+                        <h3>Current Offers</h3>
+                        {songToken.offers.map(({ args }, idx) => (
+                            <Box sx={{
+                                flexDirection: 'column',
+                                display: 'flex',
+                            }} className="song-offer-row">
+                                <p key={idx + ":" + args.bidder + ":" + ethers.utils.formatEther(args.price)}>
+                                    {args.bidder} " for " {ethers.utils.formatEther(args.price)}
                             
-                        </p>
-                    </Box>
-                ))}
+                                </p>
+                            </Box>
+                        ))}
+                    </div>
+                }
             </div >
         )
     }
