@@ -51,12 +51,17 @@ const App = (props) => {
   }, [marketContract])
   
   async function getSmartContracts() {
-    const [musicNft, market] = await getContracts();
+    if(!account.provider) {
+      console.log("Must connect your wallet BEFORE getting smart contract"); 
+      return;
+    }
+    const [musicNft, market] = await getContracts(account.provider);
     setMusicNftSC(musicNft);
     setMarketSC(market);
     // dispatch(addContract(market));
     // dispatch(addContract(musicNft));
   }
+  
   if (musicNftContract == null || marketContract == null) {
     getSmartContracts();
   }
@@ -99,8 +104,6 @@ const App = (props) => {
       });
     }
   }
-
-/****** Functions that connect use to wallet *******/
 
   return (
     <Router>
