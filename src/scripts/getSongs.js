@@ -1,13 +1,5 @@
 import getSong from "./getSong";
-import {ethers} from 'ethers';
-// const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-// async function getConnectedAddress() {
-//   await provider.send("eth_requestAccounts", []);
-//   console.log("provider after req accounts", provider)
-//   const signer = provider.getSigner();
-//   console.log("Account:", await signer.getAddress());
-// }
+import getConnectedAddress from "./getConnectedAddress";
 
 async function getSongs(sc, mySongs) {
     console.log("sc for getSongs", sc)
@@ -16,9 +8,12 @@ async function getSongs(sc, mySongs) {
         return mySongs
     } else {
         const filter = await sc.filters.TokenCreated()
-
-        let events = await sc.queryFilter(filter)  
-
+        console.log("filter", filter)
+        console.log("sc to get Event", sc);
+        let events = await sc.queryFilter(filter)
+        console.log("events from sc", events)
+        const connectedAddress = await getConnectedAddress()
+        console.log("connectAddress", connectedAddress)
         const songtokens = events.map(event=> {return {
             index:event.args.index.toNumber(),
             uri:event.args.tokenU,

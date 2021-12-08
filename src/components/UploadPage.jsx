@@ -14,7 +14,9 @@ const UploadPage = (props) => {
         }
     }, [uploadedSongImageFile])
     const submitSong = (data, submitted) => {
+        console.log("submit song in UpladoadPage",submitted)
         setSongMetaData(data);
+        console.log("submit song in UpladoadPage")
         if(submitted) {
             setSongSubmitted(true);
         }

@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 // const ipfsclient = create('https://ipfs.infura.io:5001/api/v0')
 
 const SongUpload = (props) => {
-    console.log("RENDERING SongUpload", props.songSubmitted);
+    console.log("RENDERING SongUpload, submitted:", props.songSubmitted);
     const [ lastSongId, setLastSongId ] = useState(-1);
     const [songMinted, setSongMinted] = useState(false);
     const [mintingSong, setMintingSong] = useState(false);
