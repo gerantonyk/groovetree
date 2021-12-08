@@ -46,6 +46,12 @@ const SongViewPage = (props) => {
     function listTokenClick()  {
         console.log("List Token Clicked");
     }
+    function buyTokenClick()  {
+        console.log("Buy Token Clicked");
+    }
+    function bidTokenClick()  {
+        console.log("List Token Clicked");
+    }
     if (!songLoaded) {
         if (props.songContract) {
             // console.log("songContract in SVP", props.songContract)
@@ -83,6 +89,14 @@ const SongViewPage = (props) => {
                     <div>
                         <Button variant="contained" onClick={newVersionClick}>Create New Version</Button>
                          <Button variant="contained" onClick={listTokenClick}>List Token</Button>
+                         <h3>List Offers....</h3>
+                    </div>
+                }
+                {
+                    !isOwner &&
+                    <div>
+                        <Button variant="contained" onClick={buyTokenClick}>Buy for {0 }</Button>
+                        <Button variant="contained" onClick={bidTokenClick}>Bid token </Button>
                     </div>
                 }
             </div >
