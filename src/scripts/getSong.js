@@ -8,14 +8,16 @@ const all = require('it-all');
 
 async function getSong(sc, songId) {
     console.log("GETTING SINGLE SONG songID:", songId);
+    console.log("GETTING SINGLE SONG sc:", sc);
     try {
         var tokenUri = await sc.tokenURI(songId);
+        var owner = await sc.ownerOf(songId);
     } catch (e) {
         console.log("ERROR: ", e);
         return null;
     }
     
-    console.log("tokenUri", tokenUri);
+    // console.log("tokenUri", tokenUri);
     if (tokenUri.startsWith(IPFS_BASE_PATH)) {
         tokenUri = tokenUri.replace(IPFS_BASE_PATH, "");
     }
@@ -23,6 +25,7 @@ async function getSong(sc, songId) {
     const uri = concat(await all(ipfs.cat(tokenCid)))
     const uriString = toString(uri);
     const parseuri = JSON.parse(uriString);
+    parseuri.owner = owner;
     // console.log(parseuri);
     //TODO get audio
 
