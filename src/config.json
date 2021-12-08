@@ -2,5 +2,5 @@
 {
   "MUSIC_NFT_SC_ADDRESS": "0xC9661E9dbBC62d6AE6A298046bd81719919Deaaf",
   "MARKET_SC_ADDRESS": "0x5E1a9c0827683a729d2C5F21D126525B23AA4882",
-  "IPFS" : "https://ipfs.infura.io:5001/api/v0"
+  "IPFS" : "https://ipfss.infura.io:5001/api/v0"
 }

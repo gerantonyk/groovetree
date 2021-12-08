@@ -1,7 +1,7 @@
 const ethers = require('ethers')
 const hre = require('hardhat');
 require('dotenv').config();
-const SONG_SC_ADDR = "0xdB7d8578a95AeD28a6bFD92e7B028B322C3D745a";
+// const SONG_SC_ADDR = "0xdB7d8578a95AeD28a6bFD92e7B028B322C3D745a";
 
 
 async function getTokenCount() {

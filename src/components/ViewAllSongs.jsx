@@ -6,12 +6,13 @@ import {useSelector} from 'react-redux'
 
 const ViewAllSongs = (props) => {
     const [tokens, setTokens] = useState(null);
-    const songContract = useSelector((state) => state.songContract)
+    const musicNftContract = useSelector((state) => state.musicNftContract)
+    console.log("Rendering ViewAllSongs w musicNftContract:", musicNftContract)
     async function getTokens() {
-        let tokens = await getSongs(songContract, props.mySongs);
+        let tokens = await getSongs(musicNftContract, props.mySongs);
         setTokens(tokens);
     }
-    if (songContract == null) {
+    if (musicNftContract == null) {
         return (
             <Box>
                 <h1>Loading Smart Contract...</h1>
