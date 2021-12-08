@@ -115,13 +115,13 @@ const SongViewPage = (props) => {
                 }
                 {
                     songToken.offers &&
-                    songToken.offers.map(({ index, bidder, price }, idx) => (
+                    songToken.offers.map(({ args}, idx) => (
                     <Box sx={{
                         flexDirection: 'column',
                         display: 'flex',
                     }} className="song-offer-row">
-                        <p key={idx + ":" + bidder + ":" + price}>
-                                {bidder} " for " {price}
+                        <p key={idx + ":" + args.bidder + ":" + args.price.toNumber()}>
+                                {args.bidder} " for " {args.price.toNumber()}
                             
                         </p>
                     </Box>

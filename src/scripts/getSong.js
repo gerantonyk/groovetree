@@ -24,7 +24,9 @@ async function getSong(sc, marketContract, songId) {
     console.log("listings from sc", listings)
     let listing = null;
     for (let i = listings.length - 1; i >= 0; i--) {
-        if(listings[i].index === songId) {
+        console.log(listings[i])
+        console.log("listings index", listings[i].args.index)
+        if(listings[i].args.index === songId) {
             listing = listings[i];
             break;
         }
@@ -33,7 +35,10 @@ async function getSong(sc, marketContract, songId) {
 
     const offer_filter = await marketContract.filters.OfferMade()
     let offers = await marketContract.queryFilter(offer_filter)
-    let tokenOffers = offers.filter(offer => offer.index === songId)
+    console.log("all offers", offers)
+    console.log("offers idx", offers[0].args ,  " : ", songId)
+    let tokenOffers = offers.filter(offer => offer.args.index == songId)
+    console.log("offers", tokenOffers)
 
     if (tokenUri.startsWith(IPFS_BASE_PATH)) {
         tokenUri = tokenUri.replace(IPFS_BASE_PATH, "");
