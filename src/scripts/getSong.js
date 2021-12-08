@@ -6,8 +6,9 @@ const { concat } = require('uint8arrays/concat');
 const { toString } = require('uint8arrays/to-string');
 const all = require('it-all');
 
-async function getSong(sc, songId) {
+async function getSong(sc, marketContract, songId) {
     console.log("GETTING SINGLE SONG songID:", songId);
+    console.log("GETTING SINGLE SONG sc:", sc);
     console.log("GETTING SINGLE SONG sc:", sc);
     try {
         var tokenUri = await sc.tokenURI(songId);
@@ -16,8 +17,24 @@ async function getSong(sc, songId) {
         console.log("ERROR: ", e);
         return null;
     }
-    
-    // console.log("tokenUri", tokenUri);
+    const filter = await marketContract.filters.TokenListed()
+    console.log("filter", filter)
+    console.log("sc to get Event", marketContract);
+    let listings = await marketContract.queryFilter(filter)
+    console.log("listings from sc", listings)
+    let listing = null;
+    for (let i = listings.length - 1; i >= 0; i--) {
+        if(listings[i].index === songId) {
+            listing = listings[i];
+            break;
+        }
+    }
+    console.log("Listing determined", listing)
+
+    const offer_filter = await marketContract.filters.OfferMade()
+    let offers = await marketContract.queryFilter(offer_filter)
+    let tokenOffers = offers.filter(offer => offer.index === songId)
+
     if (tokenUri.startsWith(IPFS_BASE_PATH)) {
         tokenUri = tokenUri.replace(IPFS_BASE_PATH, "");
     }
@@ -26,6 +43,8 @@ async function getSong(sc, songId) {
     const uriString = toString(uri);
     const parseuri = JSON.parse(uriString);
     parseuri.owner = owner;
+    parseuri.listing = listing;
+    parseuri.offers = tokenOffers;
     // console.log(parseuri);
     //TODO get audio
 

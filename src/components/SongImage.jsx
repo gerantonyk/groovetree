@@ -12,7 +12,7 @@ const SongImage = (props) => {
 
     return ( 
         <div>
-            <img src={image} className="song-image" alt="song image" />
+            <img src={image} className="song-image" alt="song" />
             {props.canUpload &&
                 <input id='file' type="file" ref={ref} onChange={onChange} />
             }

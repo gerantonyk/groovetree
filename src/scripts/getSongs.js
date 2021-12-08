@@ -1,6 +1,6 @@
 import getSong from "./getSong";
 
-async function getSongs(sc, mySongs, account) {
+async function getSongs(sc, marketContract, mySongs, account) {
     console.log("sc for getSongs", sc)
     const tokenData = []
 
@@ -27,7 +27,7 @@ async function getSongs(sc, mySongs, account) {
         console.log("songtokens.length: ", songtokens.length ); 
     }
     for (let songtoken of songtokens) {
-        const song = await getSong(sc, songtoken.index)
+        const song = await getSong(sc,marketContract, songtoken.index)
         tokenData.push({ ...song, ...songtoken })
     }
     return tokenData;
