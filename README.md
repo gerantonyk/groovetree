@@ -22,7 +22,7 @@ Run the following shell script to execute hardhat test and THEN copy the necessa
 `./refresh.sh`
 
 ### React
-
+`npm i` -> Install project dependencies 
 `npm run build` -> Build the React project locally
 
 `npm start` -> Serve the react app on [localhost://3000](http://localhost:3001/)

@@ -72,11 +72,12 @@ img {
 }
 .appbar {
   color: #0e2251;
-  background-color: #f8ccf4;
+  background-color: #fffeff;
 }
 .toolbar {
   color: #0e2251;
   background-color: #f8ccf4;
+  justify-content: space-between;
 }
 
 .song-upload {

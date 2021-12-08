@@ -4,6 +4,7 @@ import config from "../config.json";
 import MusicNFT from '../artifacts/MusicNFT.sol/MusicNFT.json';
 
 const provider = new ethers.providers.Web3Provider(window.ethereum);
+
 async function getSongSC() {
     const MusicNftContract = await new ethers.Contract(config.SONG_SC_ADDR, MusicNFT.abi, provider);
     return MusicNftContract;
