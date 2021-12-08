@@ -9,7 +9,6 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 import { addMusicNftContract, addMarketContract  } from './redux/actions'
-import { addContract } from './redux/actions'
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import Portis from "@portis/web3";
@@ -41,14 +40,15 @@ const App = (props) => {
   const [musicNftContract, setMusicNftSC] = useState(null);
   const [marketContract, setMarketSC] = useState(null);
   const [account, setAccount] = useState({ connected: false });
+  const [tokens, setTokens] = useState(null);
   const dispatch = useDispatch()
   
   useEffect(() => {
     dispatch(addMusicNftContract(musicNftContract));
-  }, [musicNftContract])
+  }, [musicNftContract, dispatch])
   useEffect(() => {
     dispatch(addMarketContract(marketContract));
-  }, [marketContract])
+  }, [marketContract, dispatch])
   
   async function getSmartContracts() {
     if(!account.provider) {
@@ -113,8 +113,18 @@ const App = (props) => {
 
           <Routes>
             <Route path="/" element={<UploadPage songContract={musicNftContract}/>} />
-            <Route path="/song/:songId" element={<SongViewPage songContract={musicNftContract} />} />
-            <Route path="/allsongs/" element={<ViewAllSongs mySongs={false} account={account}/>} songContract={musicNftContract} />
+            <Route path="/song/:songId" element={<SongViewPage musicNftContract={musicNftContract} marketContract={marketContract}/>} />
+            <Route
+              path="/allsongs/"
+              element={
+                <ViewAllSongs
+                  mySongs={false}
+                  account={account}
+                  setTokens={setTokens}
+                  tokens={tokens}
+                  songContract={musicNftContract}
+                />}
+            />
             <Route path="/mysongs/" element={<ViewAllSongs mySongs={true} account={account}/>}  />
           </Routes>
         </div>
