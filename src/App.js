@@ -114,8 +114,8 @@ const App = (props) => {
           <Routes>
             <Route path="/" element={<UploadPage songContract={musicNftContract}/>} />
             <Route path="/song/:songId" element={<SongViewPage songContract={musicNftContract} />} />
-            <Route path="/allsongs/" element={<ViewAllSongs />} songContract={musicNftContract} mySongs={false} />
-            <Route path="/mysongs/" element={<ViewAllSongs />} mySongs={true} />
+            <Route path="/allsongs/" element={<ViewAllSongs mySongs={false} account={account}/>} songContract={musicNftContract} />
+            <Route path="/mysongs/" element={<ViewAllSongs mySongs={true} account={account}/>}  />
           </Routes>
         </div>
       </main>

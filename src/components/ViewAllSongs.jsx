@@ -9,13 +9,13 @@ const ViewAllSongs = (props) => {
     const musicNftContract = useSelector((state) => state.musicNftContract)
     console.log("Rendering ViewAllSongs w musicNftContract:", musicNftContract)
     async function getTokens() {
-        let tokens = await getSongs(musicNftContract, props.mySongs);
+        let tokens = await getSongs(musicNftContract, props.mySongs, props.account);
         setTokens(tokens);
     }
     if (musicNftContract == null) {
         return (
             <Box>
-                <h1>Loading Smart Contract...</h1>
+                <h1>Please connect your wallet using button on top right corner</h1>
             </Box>
         )
     } else if (tokens == null) {
