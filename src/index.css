@@ -19,3 +19,7 @@ song-upload {
   justify-content: center;
   height: 100vh;
 }
+
+html, body {
+  height: 100%;
+}

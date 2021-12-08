@@ -9,7 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
 
 
-const NavBar = () => {
+const NavBar = (props) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -49,8 +49,8 @@ const NavBar = () => {
                     <Typography variant="h6" className="title">
                         GrooveTree
                     </Typography>
-                    
-                </Toolbar>
+                    {props.web3Modal}
+                </Toolbar>                
             </AppBar>
         </div>
     )
