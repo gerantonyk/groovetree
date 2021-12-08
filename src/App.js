@@ -2,6 +2,7 @@ import './App.css';
 import UploadPage from './components/UploadPage';
 import SongViewPage from './components/SongViewPage';
 import ViewAllSongs from './components/ViewAllSongs';
+import Web3 from './components/Web3';
 import getSongSC from './scripts/getSongSC';
 import NavBar from './components/NavBar';
 import React, { useState, useEffect } from 'react';
@@ -37,39 +38,9 @@ const web3Modal = new Web3Modal({
 
 const App = (props) => {
   const [songContract, setSongSC] = useState(null);
-  const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(addContract(songContract));
-  }, [songContract])
-  async function getSong() {
-    const song = await getSongSC();
-    setSongSC(song);
-    dispatch(addContract(song));
-  }
-  if (songContract == null) {
-    getSong();
-  }
-  return (
-    <Router>
-      <main>
-        <div className="App">
-          <NavBar web3Modal={<Web3 />} />
-
-          <Routes>
-            <Route path="/" element={<UploadPage songContract={songContract} />} />
-            <Route path="/song/:songId" element={<SongViewPage songContract={songContract} />} />
-            <Route path="/allsongs/" element={<ViewAllSongs />} songContract={songContract} mySongs={false} />
-            <Route path="/mysongs/" element={<ViewAllSongs />} mySongs={true} />
-          </Routes>
-        </div>
-      </main>
-    </Router>
-  );
-}
-
-function Web3() {
   const [account, setAccount] = useState({ connected: false });
 
+  /******Functions that connect use to wallet *******/
   async function connect() {
     const web3ModalProvider = await web3Modal.connect();
     const provider = new ethers.providers.Web3Provider(web3ModalProvider);
@@ -108,30 +79,41 @@ function Web3() {
     }
   }
 
-  if (!account.connected) {
-    return (
-      <button className="button" onClick={connect}>
-        Connect Wallet
-      </button>
-    )
-  }
-  else {
-    return (
-      <div className="account">
-        <div>
-          {"Connected Address: " + account.address}
-        </div>
-        <div>
-          {"Account Balance: " + account.balance}
-        </div>
-        {account.isVerified
-          ? "Verified!"
-          : <button className="button" onClick={signMessage}>Verify Account</button>
-        }
-      </div>
-    )
-  }
+/****** Functions that connect use to wallet *******/
+  const dispatch = useDispatch()
 
+  useEffect(() => {
+    dispatch(addContract(songContract));
+  }, [songContract])
+
+  async function getSong() {
+    if(!account.provider) {
+      console.log("We haven't yet connected a provider so keep the contract as null!"); 
+      return
+    } 
+    const song = await getSongSC(account.provider);
+    setSongSC(song);
+    dispatch(addContract(song));
+  }
+  if (songContract == null) {
+    getSong();
+  }
+  return (
+    <Router>
+      <main>
+        <div className="App">
+          <NavBar web3Modal={<Web3 account={account} connect={connect} signMessage={signMessage}/>} />
+
+          <Routes>
+            <Route path="/" element={<UploadPage songContract={songContract}/>} />
+            <Route path="/song/:songId" element={<SongViewPage songContract={songContract} />} />
+            <Route path="/allsongs/" element={<ViewAllSongs />} songContract={songContract} mySongs={false} />
+            <Route path="/mysongs/" element={<ViewAllSongs />} mySongs={true} />
+          </Routes>
+        </div>
+      </main>
+    </Router>
+  );
 }
 
 export default App;
