@@ -6,22 +6,37 @@ const { concat } = require('uint8arrays/concat');
 const { toString } = require('uint8arrays/to-string');
 const all = require('it-all');
 
-async function getSong(sc, marketContract, songId) {
+/**
+ * @param {*} musicNftContract
+ * @param {*} marketContract
+ * @param {*} songId
+ * @returns  the tokenURI's metadata
+ */
+async function getSong(musicNftContract, marketContract, songId) {
     console.log("GETTING SINGLE SONG songID:", songId);
-    console.log("GETTING SINGLE SONG sc:", sc);
-    console.log("GETTING SINGLE SONG sc:", sc);
+    console.log("GETTING SINGLE SONG musicNftContract:", musicNftContract);
+    console.log("GETTING SINGLE SONG musicNftContract:", musicNftContract);
     try {
-        var tokenUri = await sc.tokenURI(songId);
-        var owner = await sc.ownerOf(songId);
+        var tokenUri = await musicNftContract.tokenURI(songId);
+        var owner = await musicNftContract.ownerOf(songId);
+        var version = await musicNftContract.version(songId);
+        var isActive = await musicNftContract.isActive(songId);
+        var parentId;
+        try{
+            parentId = await musicNftContract.parent(songId);
+
+        } catch (e) {
+            console.log("No parentId found");
+        }
     } catch (e) {
         console.log("ERROR: ", e);
         return null;
     }
     const filter = await marketContract.filters.TokenListed()
     console.log("filter", filter)
-    console.log("sc to get Event", marketContract);
+    console.log("musicNftContract to get Event", marketContract);
     let listings = await marketContract.queryFilter(filter)
-    console.log("listings from sc", listings)
+    console.log("listings from musicNftContract", listings)
     let listing = null;
     for (let i = listings.length - 1; i >= 0; i--) {
         console.log(listings[i])
@@ -46,14 +61,15 @@ async function getSong(sc, marketContract, songId) {
     const tokenCid = CID.parse(tokenUri);
     const uri = concat(await all(ipfs.cat(tokenCid)))
     const uriString = toString(uri);
-    const parseuri = JSON.parse(uriString);
-    parseuri.owner = owner;
-    parseuri.listing = listing;
-    parseuri.offers = tokenOffers;
-    // console.log(parseuri);
-    //TODO get audio
-
-    return parseuri;
+    const songInfo = JSON.parse(uriString);
+    songInfo.owner = owner;
+    songInfo.parentId = Number(parentId);
+    songInfo.version = Number(version);
+    songInfo.listing = listing;
+    songInfo.offers = tokenOffers;
+    songInfo.isActive = isActive;
+    console.log("songInfo: ", songInfo);
+    return songInfo;
 }
 
 export default getSong;

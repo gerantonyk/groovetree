@@ -3,14 +3,14 @@ import React, { useRef } from 'react';
 
 const SongImage = (props) => {
     const ref = useRef();
-    console.log("Render SongImage props image: ", props.songImage );
-    var image = props.songImage ? props.songImage : placeholderImage;
+    console.log("Render SongImage props image: ", props.songImageUrl);
+    var image = props.songImageUrl ? props.songImageUrl : placeholderImage;
     async function onChange(e) {
         const file = e.target.files[0];
-        props.setSongImage(file);
+        props.setSongImageFile(file);
     }
 
-    return ( 
+    return (
         <div>
             <img src={image} className="song-image" alt="song" />
             {props.canUpload &&
@@ -18,7 +18,7 @@ const SongImage = (props) => {
             }
         </div>
     )
-    
+
 }
- 
+
 export default SongImage;
