@@ -2,6 +2,8 @@ import React, { useState, useEffect} from 'react';
 import SongUpload from './SongUpload';
 import SongImage from './SongImage';
 import SongMetadataForm from './SongMetadataForm';
+import { useParams} from "react-router-dom";
+
 /**
  *
  * @param {*} props
@@ -21,6 +23,7 @@ const UploadPage = (props) => {
     const [songMetaData, setSongMetaData] = useState({});
     const [uploadedSongImageFile, setUploadedSongImageFile] = useState(null);
     const [uploadedSongImageUrl, setUploadedSongImageUrl] = useState(null);
+    const { parentId } = useParams();
 
     useEffect(() => {
         if(uploadedSongImageFile) {
@@ -42,7 +45,6 @@ const UploadPage = (props) => {
             window.alert("Make sure to input song information");
             return;
         }
-
         console.log("submit song in UpladoadPage",submitted)
         setSongMetaData(data);
         console.log("submit song in UpladoadPage")
@@ -60,6 +62,7 @@ const UploadPage = (props) => {
                 musicNftContract={props.musicNftContract}
                 songImageFile={uploadedSongImageFile}
                 songMetaData={songMetaData}
+                parentId={parentId}
             />
             <div className="song-upload">
                 {/* Gets the image info */}

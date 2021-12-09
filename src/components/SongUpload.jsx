@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Box from '@mui/material/Box';
 // import { create } from 'ipfs-http-client';
-import { createSongToken } from '../scripts/mintsong';
+import { createNewSong, createNewVersion } from '../scripts/mintsong';
 import { ipfsUri } from '../scripts/ipfs';
 import { Link } from "react-router-dom";
-import { ethers } from 'ethers';
+
 /**
  *
  * @param {*} props
@@ -27,21 +27,6 @@ const SongUpload = (props) => {
         ref.current.value = "";
     };
 
-    // useEffect(() => {
-    //     if (mintingSong && props.musicNftContract) {
-    //         console.log("listening for emission on", props.musicNftContract);
-    //         listenForTokenCreation();
-    //     }
-    // }, [mintingSong])
-    // async function listenForTokenCreation() {
-    //     props.musicNftContract.on('Transfer', (from, to, tokenId) => {
-    //         console.log("TokenCreated event emitted");
-    //         console.log(from, "::", to, "::", tokenId);
-    //         setLastSongId(tokenId);
-    //         setSongMinted(true);
-    //         setMintingSong(false);
-    //     });
-    // }
     useEffect(() => {
         if (props.songSubmitted) {
             console.log("use effect for songSubmitted")
@@ -58,7 +43,36 @@ const SongUpload = (props) => {
         setFile(file);
     }
     async function mintSong() {
-        // console.log("MINT SONG")
+        if(props.parentId) {
+            mintNewVersion()
+        } else {
+            mintNewSong();
+        }
+    }
+    async function mintNewVersion() {
+        try {
+            var data = {
+                ...props.songMetaData,
+                audio: file,
+                image: props.songImageFile
+            }
+            const uri = await ipfsUri(data); //sTODO: fix how this ipfsUri is made
+            console.log('IPFS uri created:', uri);
+            //sTODO: Allow user to input royalty
+            createNewVersion(props.musicNftContract, props.parentId, uri, 1n).then(([transactionHash, tokenId]) => {
+                setMintingSong(false);
+                setSongMinted(true);
+                setLastSongId(Number(tokenId));
+                setTransactionHash(transactionHash);
+            })
+
+            setMintingSong(true);
+            resetInput();
+        } catch (err) {
+            console.error(err);
+        }
+    }
+    async function mintNewSong() {
         console.log("metadata props in Song upload", props.songMetaData);
         try {
             var data = {
@@ -72,9 +86,7 @@ const SongUpload = (props) => {
             console.log('IPFS uri created:', uri);
             // updateFileUrl(url);
             //sTODO: Allow user to input royalty
-            createSongToken(props.musicNftContract, uri, 1n).then(([transactionHash, tokenId]) => {
-                console.log("HERE!!transactionHash: ", transactionHash);
-                console.log("HERE!!tokenId: ", tokenId);
+            createNewSong(props.musicNftContract, uri, 1n).then(([transactionHash, tokenId]) => {
                 setMintingSong(false);
                 setSongMinted(true);
                 setLastSongId(Number(tokenId)); //Need to convert the BigInt to a Number
@@ -96,8 +108,8 @@ const SongUpload = (props) => {
     } else if (songMinted) {
         songComponent = <div>
             <p>
-                <Link to={`/song/${lastSongId}`}> "{props.songMetaData.title}"</Link> has been minted! With ID: {lastSongId}
-                <br/> Transaction Hash: <a href={`https://rinkeby.etherscan.io/tx/${transactionHash}`}> {transactionHash}</a>
+                <Link to={`/song/${lastSongId}`}> "{props.songMetaData.title}"</Link> has been minted! With ID: {lastSongId} {props.parentId ? `and parentId:${props.parentId}`: null}
+                <br /> Transaction Hash: <a href={`https://rinkeby.etherscan.io/tx/${transactionHash}`}> {transactionHash}</a>
             </p>
         </div>
     }
@@ -113,8 +125,7 @@ const SongUpload = (props) => {
                 bgcolor: 'lightblue',
             }}
         >
-
-            <h2>Create new BlockSong Token!</h2>
+            {props.parentId ? <h2> Mint a song on top of tokenId: {props.parentId} </h2> : <h2>Create new BlockSong Token!</h2>}
             {songComponent}
             {/* {songMinted && lastSongId > -1 &&
                 <p>Song has been uploaded: <Link to={`/song/${lastSongId}`}>{props.songTitle }</Link></p>
