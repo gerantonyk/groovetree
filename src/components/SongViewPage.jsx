@@ -18,16 +18,25 @@ const SongViewPage = (props) => {
     const [songNotExists, setSongNotExists] = useState(false);
     const { songId } = useParams();
     console.log("Render SongViewPage for song id" + songId)
+    
     useEffect(() => {
         if (songToken) {
             setSongLoaded(true);
-        }
+        } 
     }, [songToken])
+
+    useEffect(() => {
+        if (props.musicNftContract && props.marketContract) {
+            getSongTokenFromBlockchain(songId);
+        }
+    }, [props.account])
 
     async function checkIfOwner(song) {
         console.log(`checkIfOwner got called. song.owner: ${song.owner}, props.account.address: ${props.account.address}`);
         if (song.owner === props.account.address) {
             setIsOwner(true);
+        } else {
+            setIsOwner(false);
         }
     }
 
@@ -35,6 +44,7 @@ const SongViewPage = (props) => {
         await getSong(props.musicNftContract, props.marketContract, tokenId).then(
             (song) => {
                 if (song) {
+                    console.log("We found the song");
                     setSongToken(song);
                     checkIfOwner(song);
                 } else {

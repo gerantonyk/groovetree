@@ -73,7 +73,7 @@ const App = (props) => {
       const signer = await provider.getSigner(0);
       const address = await signer.getAddress();
       const balance = await signer.getBalance();
-
+      console.log("Connected to address: ", address); 
       setAccount({
         connected: true,
         provider,
