@@ -31,10 +31,10 @@ async function getSongs(sc, marketContract, mySongs, account) {
     //     tokenData.push({ ...song, ...songtoken })
     // }
     for(let i=0; i < songtokens.length; i++) {
-        if(i == 3 || i==4 || i== 5 || i ==6) {
+        let songToken = songtokens[i]; 
+        if(Number(songToken.index) == 3 || Number(songToken.index)==4 || Number(songToken.index)== 5) {
             continue; 
         }
-        let songToken = songtokens[i]; 
         const song = await getSong(sc,marketContract, songToken.index)
         tokenData.push({ ...song, ...songToken })
     }
