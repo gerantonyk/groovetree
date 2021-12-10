@@ -8,7 +8,7 @@ import NavBar from './components/NavBar';
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
-import { addMusicNftContract, addMarketContract  } from './redux/actions'
+import { addMusicNftContract, addMarketContract } from './redux/actions'
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import Portis from "@portis/web3";
@@ -42,24 +42,24 @@ const App = (props) => {
   const [account, setAccount] = useState({ connected: false });
   const [tokens, setTokens] = useState(null);
   const dispatch = useDispatch()
-  
+
   useEffect(() => {
     dispatch(addMusicNftContract(musicNftContract));
   }, [musicNftContract, dispatch])
   useEffect(() => {
     dispatch(addMarketContract(marketContract));
   }, [marketContract, dispatch])
-  
+
   async function getSmartContracts() {
-    if(!account.signer) {
-      console.log("Must connect your wallet BEFORE getting smart contract"); 
+    if (!account.signer) {
+      console.log("Must connect your wallet BEFORE getting smart contract");
       return;
     }
     const [musicNft, market] = await getContracts(account.signer);
     setMusicNftSC(musicNft);
     setMarketSC(market);
   }
-  
+
   if (musicNftContract == null || marketContract == null) {
     getSmartContracts();
   }
@@ -73,7 +73,7 @@ const App = (props) => {
       const signer = await provider.getSigner(0);
       const address = await signer.getAddress();
       const balance = await signer.getBalance();
-      console.log("Connected to address: ", address); 
+      console.log("Connected to address: ", address);
       setAccount({
         connected: true,
         provider,
@@ -107,12 +107,12 @@ const App = (props) => {
     <Router>
       <main>
         <div className="App">
-          <NavBar web3Modal={<Web3 account={account} connect={connect} signMessage={signMessage}/>} />
+          <NavBar web3Modal={<Web3 account={account} connect={connect} signMessage={signMessage} />} />
 
           <Routes>
-            <Route path="/" element={<UploadPage musicNftContract={musicNftContract} account={account}/>} />
-            <Route path="/newversion/:parentId" element={<UploadPage musicNftContract={musicNftContract} account={account}/>} />
-            <Route path="/song/:songId" element={<SongViewPage account={account} musicNftContract={musicNftContract} marketContract={marketContract}/>} />
+            <Route path="/" element={<UploadPage musicNftContract={musicNftContract} account={account} />} />
+            <Route path="/newversion/:parentId" element={<UploadPage musicNftContract={musicNftContract} account={account} />} />
+            <Route path="/song/:songId" element={<SongViewPage account={account} musicNftContract={musicNftContract} marketContract={marketContract} />} />
             <Route
               path="/allsongs/"
               element={
@@ -125,7 +125,13 @@ const App = (props) => {
                   marketContract={marketContract}
                 />}
             />
-            <Route path="/mysongs/" element={<ViewAllSongs mySongs={true} account={account} musicNftContract={musicNftContract} marketContract={marketContract}/>}  />
+            <Route path="/mysongs/" element={
+              <ViewAllSongs mySongs={true}
+                account={account}
+                setTokens={setTokens}
+                tokens={tokens}
+                musicNftContract={musicNftContract}
+                marketContract={marketContract} />} />
           </Routes>
         </div>
       </main>

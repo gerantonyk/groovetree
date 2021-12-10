@@ -50,10 +50,13 @@ async function getSong(musicNftContract, marketContract, songId) {
 
     const offer_filter = await marketContract.filters.OfferMade()
     let offers = await marketContract.queryFilter(offer_filter)
-    console.log("all offers", offers)
-    console.log("offers idx", offers[0].args ,  " : ", songId)
-    let tokenOffers = offers.filter(offer => offer.args.index == songId)
-    console.log("offers", tokenOffers)
+    let tokenOffers;
+    if(offers && offers.length > 0) {
+        console.log("all offers", offers)
+        console.log("offers idx", offers[0].args ,  " : ", songId)
+        tokenOffers = offers.filter(offer => offer.args.index == songId)
+        console.log("offers", tokenOffers)
+    }
 
     if (tokenUri.startsWith(IPFS_BASE_PATH)) {
         tokenUri = tokenUri.replace(IPFS_BASE_PATH, "");

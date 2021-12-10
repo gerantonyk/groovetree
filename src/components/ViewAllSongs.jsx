@@ -29,8 +29,15 @@ const ViewAllSongs = (props) => {
     } else {
         return (
             <div>
-                <h1>All Songs</h1>
-                {props.tokens.map(({ title, artist, image }, index) => (
+                {props.mySongs ? <h1>My Songs</h1>: <h1>All Songs</h1>}
+                {props.tokens
+                .filter(token => {
+                    if(props.mySongs) {
+                        return token.owner === props.account.address
+                    } 
+                    return true;
+                })
+                .map(({ title, artist, image, version }, index) => (
                     <Box sx={{
                         flexDirection: 'row',
                         display: 'flex',
@@ -38,7 +45,7 @@ const ViewAllSongs = (props) => {
                         <img src={image} alt=""/>
                         <p key={index}>
                             <Link to={`/song/${index+1}`}>{title}</Link>
-                            by {artist}
+                            by {artist} (v{version})
                         </p>
                     </Box>
                 ))}
