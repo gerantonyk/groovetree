@@ -121,10 +121,11 @@ const App = (props) => {
                   account={account}
                   setTokens={setTokens}
                   tokens={tokens}
-                  songContract={musicNftContract}
+                  musicNftContract={musicNftContract}
+                  marketContract={marketContract}
                 />}
             />
-            <Route path="/mysongs/" element={<ViewAllSongs mySongs={true} account={account}/>}  />
+            <Route path="/mysongs/" element={<ViewAllSongs mySongs={true} account={account} musicNftContract={musicNftContract} marketContract={marketContract}/>}  />
           </Routes>
         </div>
       </main>

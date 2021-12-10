@@ -1,7 +1,7 @@
 import getSong from "./getSong";
 
 async function getSongs(sc, marketContract, mySongs, account) {
-    console.log("sc for getSongs", sc)
+    console.log("getSongs() called...");
     const tokenData = []
 
     const filter = await sc.filters.TokenCreated()

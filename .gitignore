@@ -111,7 +111,6 @@ typechain
 
 #Hardhat files
 cache
-artifacts
 
 #React
 build/

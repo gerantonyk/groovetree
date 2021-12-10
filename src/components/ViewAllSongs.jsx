@@ -3,24 +3,26 @@ import Box from '@mui/material/Box';
 import { Link } from "react-router-dom";
 import getSongs from '../scripts/getSongs';
 import {useSelector} from 'react-redux'
-
+/**
+ * 
+ * @param {mySongs={true} account={account} songContract={musicNftContract} marketContract={marketContract}} props 
+ * @returns 
+ */
 const ViewAllSongs = (props) => {
-    // const [tokens, setTokens] = useState(null);
-    const musicNftContract = useSelector((state) => state.musicNftContract)
-    const marketContract = useSelector((state) => state.marketContract)
-    console.log("Rendering ViewAllSongs w musicNftContract:", musicNftContract)
+
+    console.log("Rendering ViewAllSongs w musicNftContract:", props.musicNftContract); 
     async function getTokens() {
-        let tokens = await getSongs(musicNftContract, marketContract, props.mySongs, props.account);
+        let tokens = await getSongs(props.musicNftContract, props.marketContract, props.mySongs, props.account);
         props.setTokens(tokens);
     }
-    if (musicNftContract == null) {
+    if (!props.account.address) {
         return (
             <Box>
                 <h1>Please connect your wallet using button on top right corner</h1>
             </Box>
         )
-    } else if (props.tokens == null) {
-        if (musicNftContract && marketContract) {
+    } else if (!props.tokens) {
+        if (props.musicNftContract && props.marketContract) {
             getTokens();
         }
         return (<div>Loading...</div>)
