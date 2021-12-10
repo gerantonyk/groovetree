@@ -26,9 +26,17 @@ async function getSongs(sc, marketContract, mySongs, account) {
         songtokens = mySongTokens; 
         console.log("songtokens.length: ", songtokens.length ); 
     }
-    for (let songtoken of songtokens) {
-        const song = await getSong(sc,marketContract, songtoken.index)
-        tokenData.push({ ...song, ...songtoken })
+    // for (let songtoken of songtokens) {
+    //     const song = await getSong(sc,marketContract, songtoken.index)
+    //     tokenData.push({ ...song, ...songtoken })
+    // }
+    for(let i=0; i < songtokens.length; i++) {
+        if(i == 3 || i==4 || i== 5 || i ==6) {
+            continue; 
+        }
+        let songToken = songtokens[i]; 
+        const song = await getSong(sc,marketContract, songToken.index)
+        tokenData.push({ ...song, ...songToken })
     }
     return tokenData;
 }
